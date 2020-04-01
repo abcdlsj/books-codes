@@ -1,0 +1,11 @@
+#lang racket
+(define (F n)
+  (cond ((< n 3) n)
+        (else (+ (F (- n 1)) (* 2 (F (- n 2))) (* 3 (F (- n 3)))))))
+(define (f n)
+  (ff 2 1 0 n))
+(define (ff x y z n)
+  (cond ((< n 1) z)
+        ((< n 2) y)
+        ((< n 3) x)
+        (else (ff (+ x (* 2 y) (* 3 z)) x y (- n 1)))))
