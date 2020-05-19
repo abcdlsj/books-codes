@@ -1,0 +1,4 @@
+write only
+read write, append
+usage: a.out <descriptor#>
+read write, append
