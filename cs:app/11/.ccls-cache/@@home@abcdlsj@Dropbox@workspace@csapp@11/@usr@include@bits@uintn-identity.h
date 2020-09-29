@@ -17,7 +17,8 @@
    <https://www.gnu.org/licenses/>.  */
 
 #if !defined _NETINET_IN_H && !defined _ENDIAN_H
-# error "Never use <bits/uintn-identity.h> directly; include <netinet/in.h> or <endian.h> instead."
+#error                                                                         \
+    "Never use <bits/uintn-identity.h> directly; include <netinet/in.h> or <endian.h> instead."
 #endif
 
 #ifndef _BITS_UINTN_IDENTITY_H
@@ -29,22 +30,19 @@
    conversions and associated diagnostics from macros that convert to
    a given endianness.  */
 
-static __inline __uint16_t
-__uint16_identity (__uint16_t __x)
+static __inline __uint16_t __uint16_identity(__uint16_t __x)
 {
-  return __x;
+    return __x;
 }
 
-static __inline __uint32_t
-__uint32_identity (__uint32_t __x)
+static __inline __uint32_t __uint32_identity(__uint32_t __x)
 {
-  return __x;
+    return __x;
 }
 
-static __inline __uint64_t
-__uint64_identity (__uint64_t __x)
+static __inline __uint64_t __uint64_identity(__uint64_t __x)
 {
-  return __x;
+    return __x;
 }
 
 #endif /* _BITS_UINTN_IDENTITY_H.  */

@@ -1,4 +1,4 @@
-/* 
+/*
  * ctime_ts - A thread-safe wrapper for ctime
  */
 #include "csapp.h"
@@ -14,7 +14,7 @@ static void init_ctime_ts(void)
 /* $begin ctime_ts */
 char *ctime_ts(const time_t *timep, char *privatep)
 {
-    char *sharedp; 
+    char *sharedp;
 
     P(&mutex);
     sharedp = ctime(timep);

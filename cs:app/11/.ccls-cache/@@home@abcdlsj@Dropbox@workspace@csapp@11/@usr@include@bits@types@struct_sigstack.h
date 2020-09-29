@@ -21,9 +21,9 @@
 
 /* Structure describing a signal stack (obsolete).  */
 struct sigstack
-  {
-    void *ss_sp;		/* Signal stack pointer.  */
-    int ss_onstack;		/* Nonzero if executing on this stack.  */
-  };
+{
+    void *ss_sp;    /* Signal stack pointer.  */
+    int ss_onstack; /* Nonzero if executing on this stack.  */
+};
 
 #endif

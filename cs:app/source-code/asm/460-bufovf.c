@@ -10,13 +10,13 @@ char *gets(char *s)
 {
     int c;
     char *dest = s;
-    while ((c = getchar()) != '\n' && c != EOF) 
+    while ((c = getchar()) != '\n' && c != EOF)
         *dest++ = c;
     if (c == EOF && dest == s)
-	/* No characters read */
+        /* No characters read */
         return NULL;
     *dest++ = '\0'; /* Terminate String */
-    return s;  
+    return s;
 }
 
 /* Use own versions of strlen and strcpy */
@@ -24,7 +24,7 @@ size_t my_strlen(const char *s)
 {
     size_t len = 0;
     while (*(s++))
-	len++;
+        len++;
     return len;
 }
 
@@ -32,9 +32,10 @@ char *strcpy(char *dest, const char *src)
 {
     char *result = dest;
     char c;
-    do {
-	c = *(src++);
-	*(dest++) = c;
+    do
+    {
+        c = *(src++);
+        *(dest++) = c;
     } while (c);
     return result;
 }

@@ -10,7 +10,7 @@
    not include <bits/types/sigval_t.h> and should use only the
    internal __sigval_t name.  */
 #ifndef __USE_POSIX199309
-# error "sigval_t defined for standard not including union sigval"
+#error "sigval_t defined for standard not including union sigval"
 #endif
 
 typedef __sigval_t sigval_t;

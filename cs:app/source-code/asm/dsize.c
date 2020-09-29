@@ -1,14 +1,16 @@
 #include <limits.h>
 
-
-long int plus_one() {
+long int plus_one()
+{
     return 1L;
 }
 
-long int minus_one() {
+long int minus_one()
+{
     return -1L;
 }
 
-long int tmax() {
+long int tmax()
+{
     return LONG_MAX;
 }

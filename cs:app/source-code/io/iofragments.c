@@ -2,25 +2,25 @@
 
 void fragments()
 {
-    int sockfd=0;
+    int sockfd = 0;
 
-    /* $begin fulldupopen */     
+    /* $begin fulldupopen */
     FILE *fpin, *fpout;
 
     fpin = fdopen(sockfd, "r");
     fpout = fdopen(sockfd, "w");
-    /* $end fulldupopen */     
-    
-    /* $begin fulldupclose */     
+    /* $end fulldupopen */
+
+    /* $begin fulldupclose */
     fclose(fpin);
     fclose(fpout);
-    /* $end fulldupclose */     
+    /* $end fulldupclose */
 
     /* $begin dirent */
-    struct dirent {
-        ino_t d_ino;       /* inode number */
-        char  d_name[256]; /* Filename */
+    struct dirent
+    {
+        ino_t d_ino;      /* inode number */
+        char d_name[256]; /* Filename */
     };
     /* $end dirent */
-
 }

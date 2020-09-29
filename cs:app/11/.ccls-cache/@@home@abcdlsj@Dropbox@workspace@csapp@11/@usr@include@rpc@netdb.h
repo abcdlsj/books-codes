@@ -34,7 +34,7 @@
    In GNU this file is #include'd by <netdb.h>.  */
 
 #ifndef _RPC_NETDB_H
-#define _RPC_NETDB_H	1
+#define _RPC_NETDB_H 1
 
 #include <features.h>
 
@@ -45,28 +45,28 @@ __BEGIN_DECLS
 
 struct rpcent
 {
-  char *r_name;		/* Name of server for this rpc program.  */
-  char **r_aliases;	/* Alias list.  */
-  int r_number;		/* RPC program number.  */
+    char *r_name;     /* Name of server for this rpc program.  */
+    char **r_aliases; /* Alias list.  */
+    int r_number;     /* RPC program number.  */
 };
 
-extern void setrpcent (int __stayopen) __THROW;
-extern void endrpcent (void) __THROW;
-extern struct rpcent *getrpcbyname (const char *__name) __THROW;
-extern struct rpcent *getrpcbynumber (int __number) __THROW;
-extern struct rpcent *getrpcent (void) __THROW;
+extern void setrpcent(int __stayopen) __THROW;
+extern void endrpcent(void) __THROW;
+extern struct rpcent *getrpcbyname(const char *__name) __THROW;
+extern struct rpcent *getrpcbynumber(int __number) __THROW;
+extern struct rpcent *getrpcent(void) __THROW;
 
 #ifdef __USE_MISC
-extern int getrpcbyname_r (const char *__name, struct rpcent *__result_buf,
-			   char *__buffer, size_t __buflen,
-			   struct rpcent **__result) __THROW;
+extern int getrpcbyname_r(const char *__name, struct rpcent *__result_buf,
+                          char *__buffer, size_t __buflen,
+                          struct rpcent **__result) __THROW;
 
-extern int getrpcbynumber_r (int __number, struct rpcent *__result_buf,
-			     char *__buffer, size_t __buflen,
-			     struct rpcent **__result) __THROW;
+extern int getrpcbynumber_r(int __number, struct rpcent *__result_buf,
+                            char *__buffer, size_t __buflen,
+                            struct rpcent **__result) __THROW;
 
-extern int getrpcent_r (struct rpcent *__result_buf, char *__buffer,
-			size_t __buflen, struct rpcent **__result) __THROW;
+extern int getrpcent_r(struct rpcent *__result_buf, char *__buffer,
+                       size_t __buflen, struct rpcent **__result) __THROW;
 #endif
 
 __END_DECLS

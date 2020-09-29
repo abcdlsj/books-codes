@@ -2,7 +2,8 @@
 #include <stdio.h>
 
 /* $begin 470-scheck-c */
-int main() {
+int main()
+{
     long local;
     printf("local at %p\n", &local);
     return 0;

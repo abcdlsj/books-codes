@@ -1,5 +1,6 @@
 /* $begin 380-struct-c */
-struct rec {
+struct rec
+{
     int i;
     int j;
     int a[2];
@@ -11,7 +12,6 @@ void copy(struct rec *r)
 {
     r->j = r->i;
 }
-
 
 void set_i(struct rec *r, int val)
 {
@@ -49,11 +49,10 @@ void link_p(struct rec *r)
 }
 
 /* $begin nodestruct-c */
-struct NODE {
+struct NODE
+{
     struct NODE *left;
     struct NODE *right;
     double data;
 };
 /* $begin nodestruct-c */
-
-

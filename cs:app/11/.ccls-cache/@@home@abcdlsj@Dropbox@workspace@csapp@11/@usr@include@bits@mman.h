@@ -17,7 +17,7 @@
    <https://www.gnu.org/licenses/>.  */
 
 #ifndef _SYS_MMAN_H
-# error "Never use <bits/mman.h> directly; include <sys/mman.h> instead."
+#error "Never use <bits/mman.h> directly; include <sys/mman.h> instead."
 #endif
 
 /* The following definitions basically come from the kernel headers.
@@ -25,7 +25,7 @@
 
 /* Other flags.  */
 #ifdef __USE_MISC
-# define MAP_32BIT	0x40		/* Only give out 32-bit addresses.  */
+#define MAP_32BIT 0x40 /* Only give out 32-bit addresses.  */
 #endif
 
 #include <bits/mman-map-flags-generic.h>

@@ -8,6 +8,6 @@ long poptest();
 
 int main()
 {
-  printf("pushtest -> 0x%lx\n", pushtest());
-  printf("poptest -> 0x%lx\n", poptest());
+    printf("pushtest -> 0x%lx\n", pushtest());
+    printf("poptest -> 0x%lx\n", poptest());
 }

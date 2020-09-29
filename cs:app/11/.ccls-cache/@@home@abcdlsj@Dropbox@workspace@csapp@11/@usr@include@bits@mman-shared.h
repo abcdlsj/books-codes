@@ -17,63 +17,63 @@
    <https://www.gnu.org/licenses/>.  */
 
 #ifndef _SYS_MMAN_H
-# error "Never use <bits/mman-shared.h> directly; include <sys/mman.h> instead."
+#error "Never use <bits/mman-shared.h> directly; include <sys/mman.h> instead."
 #endif
 
 #ifdef __USE_GNU
 /* Flags for mremap.  */
-# define MREMAP_MAYMOVE	1
-# define MREMAP_FIXED	2
+#define MREMAP_MAYMOVE 1
+#define MREMAP_FIXED 2
 
 /* Flags for memfd_create.  */
-# ifndef MFD_CLOEXEC
-#  define MFD_CLOEXEC 1U
-#  define MFD_ALLOW_SEALING 2U
-#  define MFD_HUGETLB 4U
-# endif
+#ifndef MFD_CLOEXEC
+#define MFD_CLOEXEC 1U
+#define MFD_ALLOW_SEALING 2U
+#define MFD_HUGETLB 4U
+#endif
 
 /* Flags for mlock2.  */
-# ifndef MLOCK_ONFAULT
-#  define MLOCK_ONFAULT 1U
-# endif
+#ifndef MLOCK_ONFAULT
+#define MLOCK_ONFAULT 1U
+#endif
 
 /* Access rights for pkey_alloc.  */
-# ifndef PKEY_DISABLE_ACCESS
-#  define PKEY_DISABLE_ACCESS 0x1
-#  define PKEY_DISABLE_WRITE 0x2
-# endif
+#ifndef PKEY_DISABLE_ACCESS
+#define PKEY_DISABLE_ACCESS 0x1
+#define PKEY_DISABLE_WRITE 0x2
+#endif
 
 __BEGIN_DECLS
 
 /* Create a new memory file descriptor.  NAME is a name for debugging.
    FLAGS is a combination of the MFD_* constants.  */
-int memfd_create (const char *__name, unsigned int __flags) __THROW;
+int memfd_create(const char *__name, unsigned int __flags) __THROW;
 
 /* Lock pages from ADDR (inclusive) to ADDR + LENGTH (exclusive) into
    memory.  FLAGS is a combination of the MLOCK_* flags above.  */
-int mlock2 (const void *__addr, size_t __length, unsigned int __flags) __THROW;
+int mlock2(const void *__addr, size_t __length, unsigned int __flags) __THROW;
 
 /* Allocate a new protection key, with the PKEY_DISABLE_* bits
    specified in ACCESS_RIGHTS.  The protection key mask for the
    current thread is updated to match the access privilege for the new
    key.  */
-int pkey_alloc (unsigned int __flags, unsigned int __access_rights) __THROW;
+int pkey_alloc(unsigned int __flags, unsigned int __access_rights) __THROW;
 
 /* Update the access rights for the current thread for KEY, which must
    have been allocated using pkey_alloc.  */
-int pkey_set (int __key, unsigned int __access_rights) __THROW;
+int pkey_set(int __key, unsigned int __access_rights) __THROW;
 
 /* Return the access rights for the current thread for KEY, which must
    have been allocated using pkey_alloc.  */
-int pkey_get (int __key) __THROW;
+int pkey_get(int __key) __THROW;
 
 /* Free an allocated protection key, which must have been allocated
    using pkey_alloc.  */
-int pkey_free (int __key) __THROW;
+int pkey_free(int __key) __THROW;
 
 /* Apply memory protection flags for KEY to the specified address
    range.  */
-int pkey_mprotect (void *__addr, size_t __len, int __prot, int __pkey) __THROW;
+int pkey_mprotect(void *__addr, size_t __len, int __prot, int __pkey) __THROW;
 
 __END_DECLS
 

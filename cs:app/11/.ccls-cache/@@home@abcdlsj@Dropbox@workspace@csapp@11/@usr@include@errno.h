@@ -19,8 +19,8 @@
  *	ISO C99 Standard: 7.5 Errors	<errno.h>
  */
 
-#ifndef	_ERRNO_H
-#define	_ERRNO_H 1
+#ifndef _ERRNO_H
+#define _ERRNO_H 1
 
 #include <features.h>
 
@@ -34,10 +34,10 @@
 __BEGIN_DECLS
 
 /* The error code set by various library functions.  */
-extern int *__errno_location (void) __THROW __attribute_const__;
-# define errno (*__errno_location ())
+extern int *__errno_location(void) __THROW __attribute_const__;
+#define errno (*__errno_location())
 
-# ifdef __USE_GNU
+#ifdef __USE_GNU
 
 /* The full and simple forms of the name with which the program was
    invoked.  These variables are set up automatically at startup based on
@@ -47,7 +47,7 @@ extern char *program_invocation_short_name;
 
 #include <bits/types/error_t.h>
 
-# endif /* __USE_GNU */
+#endif /* __USE_GNU */
 
 __END_DECLS
 

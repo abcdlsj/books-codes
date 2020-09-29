@@ -19,8 +19,8 @@
  *	POSIX Standard: 3.2.1 Wait for Process Termination	<sys/wait.h>
  */
 
-#ifndef	_SYS_WAIT_H
-#define	_SYS_WAIT_H	1
+#ifndef _SYS_WAIT_H
+#define _SYS_WAIT_H 1
 
 #include <features.h>
 
@@ -29,68 +29,67 @@ __BEGIN_DECLS
 #include <bits/types.h>
 #ifndef __pid_t_defined
 typedef __pid_t pid_t;
-# define __pid_t_defined
+#define __pid_t_defined
 #endif
 
 #if defined __USE_XOPEN_EXTENDED || defined __USE_XOPEN2K8
-# include <signal.h>
+#include <signal.h>
 #endif
 
 #if defined __USE_XOPEN_EXTENDED && !defined __USE_XOPEN2K8
 /* Some older standards require the contents of struct rusage to be
    defined here.  */
-# include <bits/types/struct_rusage.h>
+#include <bits/types/struct_rusage.h>
 #endif
 
 /* These macros could also be defined in <stdlib.h>.  */
 #if !defined _STDLIB_H || (!defined __USE_XOPEN && !defined __USE_XOPEN2K8)
 /* This will define the `W*' macros for the flag
    bits to `waitpid', `wait3', and `wait4'.  */
-# include <bits/waitflags.h>
+#include <bits/waitflags.h>
 
 /* This will define all the `__W*' macros.  */
-# include <bits/waitstatus.h>
+#include <bits/waitstatus.h>
 
-# define WEXITSTATUS(status)	__WEXITSTATUS (status)
-# define WTERMSIG(status)	__WTERMSIG (status)
-# define WSTOPSIG(status)	__WSTOPSIG (status)
-# define WIFEXITED(status)	__WIFEXITED (status)
-# define WIFSIGNALED(status)	__WIFSIGNALED (status)
-# define WIFSTOPPED(status)	__WIFSTOPPED (status)
-# ifdef __WIFCONTINUED
-#  define WIFCONTINUED(status)	__WIFCONTINUED (status)
-# endif
-#endif	/* <stdlib.h> not included.  */
+#define WEXITSTATUS(status) __WEXITSTATUS(status)
+#define WTERMSIG(status) __WTERMSIG(status)
+#define WSTOPSIG(status) __WSTOPSIG(status)
+#define WIFEXITED(status) __WIFEXITED(status)
+#define WIFSIGNALED(status) __WIFSIGNALED(status)
+#define WIFSTOPPED(status) __WIFSTOPPED(status)
+#ifdef __WIFCONTINUED
+#define WIFCONTINUED(status) __WIFCONTINUED(status)
+#endif
+#endif /* <stdlib.h> not included.  */
 
-#ifdef	__USE_MISC
-# define WCOREFLAG		__WCOREFLAG
-# define WCOREDUMP(status)	__WCOREDUMP (status)
-# define W_EXITCODE(ret, sig)	__W_EXITCODE (ret, sig)
-# define W_STOPCODE(sig)	__W_STOPCODE (sig)
+#ifdef __USE_MISC
+#define WCOREFLAG __WCOREFLAG
+#define WCOREDUMP(status) __WCOREDUMP(status)
+#define W_EXITCODE(ret, sig) __W_EXITCODE(ret, sig)
+#define W_STOPCODE(sig) __W_STOPCODE(sig)
 #endif
 
 /* The following values are used by the `waitid' function.  */
 #if defined __USE_XOPEN_EXTENDED || defined __USE_XOPEN2K8
 typedef enum
 {
-  P_ALL,		/* Wait for any child.  */
-  P_PID,		/* Wait for specified process.  */
-  P_PGID		/* Wait for members of process group.  */
+    P_ALL, /* Wait for any child.  */
+    P_PID, /* Wait for specified process.  */
+    P_PGID /* Wait for members of process group.  */
 } idtype_t;
 #endif
-
 
 /* Wait for a child to die.  When one does, put its status in *STAT_LOC
    and return its process ID.  For errors, return (pid_t) -1.
 
    This function is a cancellation point and therefore not marked with
    __THROW.  */
-extern __pid_t wait (int *__stat_loc);
+extern __pid_t wait(int *__stat_loc);
 
-#ifdef	__USE_MISC
+#ifdef __USE_MISC
 /* Special values for the PID argument to `waitpid' and `wait4'.  */
-# define WAIT_ANY	(-1)	/* Any process.  */
-# define WAIT_MYPGRP	0	/* Any process in my process group.  */
+#define WAIT_ANY (-1) /* Any process.  */
+#define WAIT_MYPGRP 0 /* Any process in my process group.  */
 #endif
 
 /* Wait for a child matching PID to die.
@@ -108,15 +107,15 @@ extern __pid_t wait (int *__stat_loc);
 
    This function is a cancellation point and therefore not marked with
    __THROW.  */
-extern __pid_t waitpid (__pid_t __pid, int *__stat_loc, int __options);
+extern __pid_t waitpid(__pid_t __pid, int *__stat_loc, int __options);
 
 #if defined __USE_XOPEN_EXTENDED || defined __USE_XOPEN2K8
-# ifndef __id_t_defined
+#ifndef __id_t_defined
 typedef __id_t id_t;
-#  define __id_t_defined
-# endif
+#define __id_t_defined
+#endif
 
-# include <bits/types/siginfo_t.h>
+#include <bits/types/siginfo_t.h>
 
 /* Wait for a childing matching IDTYPE and ID to change the status and
    place appropriate information in *INFOP.
@@ -129,12 +128,12 @@ typedef __id_t id_t;
 
    This function is a cancellation point and therefore not marked with
    __THROW.  */
-extern int waitid (idtype_t __idtype, __id_t __id, siginfo_t *__infop,
-		   int __options);
+extern int waitid(idtype_t __idtype, __id_t __id, siginfo_t *__infop,
+                  int __options);
 #endif
 
-#if defined __USE_MISC \
-    || (defined __USE_XOPEN_EXTENDED && !defined __USE_XOPEN2K)
+#if defined __USE_MISC ||                                                      \
+    (defined __USE_XOPEN_EXTENDED && !defined __USE_XOPEN2K)
 /* This being here makes the prototypes valid whether or not
    we have already included <sys/resource.h> to define `struct rusage'.  */
 struct rusage;
@@ -144,16 +143,15 @@ struct rusage;
    nil, store information about the child's resource usage there.  If the
    WUNTRACED bit is set in OPTIONS, return status for stopped children;
    otherwise don't.  */
-extern __pid_t wait3 (int *__stat_loc, int __options,
-		      struct rusage * __usage) __THROWNL;
+extern __pid_t wait3(int *__stat_loc, int __options,
+                     struct rusage *__usage) __THROWNL;
 #endif
 
 #ifdef __USE_MISC
 /* PID is like waitpid.  Other args are like wait3.  */
-extern __pid_t wait4 (__pid_t __pid, int *__stat_loc, int __options,
-		      struct rusage *__usage) __THROWNL;
+extern __pid_t wait4(__pid_t __pid, int *__stat_loc, int __options,
+                     struct rusage *__usage) __THROWNL;
 #endif /* Use misc.  */
-
 
 __END_DECLS
 

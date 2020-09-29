@@ -1,19 +1,20 @@
 long lt_cnt = 0;
 long ge_cnt = 0;
-long gotodiff_se(long x ,long y){
+long gotodiff_se(long x, long y)
+{
     long result;
-    if (x>=y)
+    if (x >= y)
         goto x_ge_y;
     lt_cnt++;
-    result = y-x;
+    result = y - x;
     return result;
 x_ge_y:
     ge_cnt++;
-    result = x- y;
+    result = x - y;
     return result;
 }
 int main()
 {
-    gotodiff_se(1,2);
+    gotodiff_se(1, 2);
     return 0;
 }

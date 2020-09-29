@@ -5,5 +5,3 @@ long deref(long *xp)
     return xp ? *xp : 0;
 }
 /* $end deref */
-
-

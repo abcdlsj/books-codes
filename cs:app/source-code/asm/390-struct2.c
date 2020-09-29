@@ -1,9 +1,11 @@
 
 
 /* $begin 390-struct2-c */
-struct prob {
+struct prob
+{
     int *p;
-    struct {
+    struct
+    {
         int x;
         int y;
     } s;
@@ -14,9 +16,9 @@ struct prob {
 /* $begin 390-struct2-ans-c */
 void sp_init(struct prob *sp)
 {
-    sp->s.x   = sp->s.y;
-    sp->p     = &(sp->s.x);
-    sp->next  = sp;
+    sp->s.x = sp->s.y;
+    sp->p = &(sp->s.x);
+    sp->next = sp;
 }
 /* $end 390-struct2-ans-c */
 

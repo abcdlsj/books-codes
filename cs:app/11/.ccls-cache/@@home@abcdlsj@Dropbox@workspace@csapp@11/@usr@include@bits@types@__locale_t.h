@@ -27,16 +27,16 @@
 
 struct __locale_struct
 {
-  /* Note: LC_ALL is not a valid index into this array.  */
-  struct __locale_data *__locales[13]; /* 13 = __LC_LAST. */
+    /* Note: LC_ALL is not a valid index into this array.  */
+    struct __locale_data *__locales[13]; /* 13 = __LC_LAST. */
 
-  /* To increase the speed of this solution we add some special members.  */
-  const unsigned short int *__ctype_b;
-  const int *__ctype_tolower;
-  const int *__ctype_toupper;
+    /* To increase the speed of this solution we add some special members.  */
+    const unsigned short int *__ctype_b;
+    const int *__ctype_tolower;
+    const int *__ctype_toupper;
 
-  /* Note: LC_ALL is not a valid index into this array.  */
-  const char *__names[13];
+    /* Note: LC_ALL is not a valid index into this array.  */
+    const char *__names[13];
 };
 
 typedef struct __locale_struct *__locale_t;

@@ -43,18 +43,17 @@
 
 #include <bits/pthreadtypes-arch.h>
 
-
 /* Common definition of pthread_mutex_t. */
 
 typedef struct __pthread_internal_list
 {
-  struct __pthread_internal_list *__prev;
-  struct __pthread_internal_list *__next;
+    struct __pthread_internal_list *__prev;
+    struct __pthread_internal_list *__next;
 } __pthread_list_t;
 
 typedef struct __pthread_internal_slist
 {
-  struct __pthread_internal_slist *__next;
+    struct __pthread_internal_slist *__next;
 } __pthread_slist_t;
 
 /* Arch-specific mutex definitions.  A generic implementation is provided
@@ -86,34 +85,33 @@ typedef struct __pthread_internal_slist
 
 #include <bits/struct_rwlock.h>
 
-
 /* Common definition of pthread_cond_t. */
 
 struct __pthread_cond_s
 {
-  __extension__ union
-  {
-    __extension__ unsigned long long int __wseq;
-    struct
+    __extension__ union
     {
-      unsigned int __low;
-      unsigned int __high;
-    } __wseq32;
-  };
-  __extension__ union
-  {
-    __extension__ unsigned long long int __g1_start;
-    struct
+        __extension__ unsigned long long int __wseq;
+        struct
+        {
+            unsigned int __low;
+            unsigned int __high;
+        } __wseq32;
+    };
+    __extension__ union
     {
-      unsigned int __low;
-      unsigned int __high;
-    } __g1_start32;
-  };
-  unsigned int __g_refs[2] __LOCK_ALIGNMENT;
-  unsigned int __g_size[2];
-  unsigned int __g1_orig_size;
-  unsigned int __wrefs;
-  unsigned int __g_signals[2];
+        __extension__ unsigned long long int __g1_start;
+        struct
+        {
+            unsigned int __low;
+            unsigned int __high;
+        } __g1_start32;
+    };
+    unsigned int __g_refs[2] __LOCK_ALIGNMENT;
+    unsigned int __g_size[2];
+    unsigned int __g1_orig_size;
+    unsigned int __wrefs;
+    unsigned int __g_signals[2];
 };
 
 #endif /* _THREAD_SHARED_TYPES_H  */

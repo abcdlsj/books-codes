@@ -16,27 +16,27 @@
    <https://www.gnu.org/licenses/>.  */
 
 #ifndef _BITS_PTHREADTYPES_ARCH_H
-#define _BITS_PTHREADTYPES_ARCH_H	1
+#define _BITS_PTHREADTYPES_ARCH_H 1
 
 #include <bits/wordsize.h>
 
 #ifdef __x86_64__
-# if __WORDSIZE == 64
-#  define __SIZEOF_PTHREAD_MUTEX_T 40
-#  define __SIZEOF_PTHREAD_ATTR_T 56
-#  define __SIZEOF_PTHREAD_RWLOCK_T 56
-#  define __SIZEOF_PTHREAD_BARRIER_T 32
-# else
-#  define __SIZEOF_PTHREAD_MUTEX_T 32
-#  define __SIZEOF_PTHREAD_ATTR_T 32
-#  define __SIZEOF_PTHREAD_RWLOCK_T 44
-#  define __SIZEOF_PTHREAD_BARRIER_T 20
-# endif
+#if __WORDSIZE == 64
+#define __SIZEOF_PTHREAD_MUTEX_T 40
+#define __SIZEOF_PTHREAD_ATTR_T 56
+#define __SIZEOF_PTHREAD_RWLOCK_T 56
+#define __SIZEOF_PTHREAD_BARRIER_T 32
 #else
-# define __SIZEOF_PTHREAD_MUTEX_T 24
-# define __SIZEOF_PTHREAD_ATTR_T 36
-# define __SIZEOF_PTHREAD_RWLOCK_T 32
-# define __SIZEOF_PTHREAD_BARRIER_T 20
+#define __SIZEOF_PTHREAD_MUTEX_T 32
+#define __SIZEOF_PTHREAD_ATTR_T 32
+#define __SIZEOF_PTHREAD_RWLOCK_T 44
+#define __SIZEOF_PTHREAD_BARRIER_T 20
+#endif
+#else
+#define __SIZEOF_PTHREAD_MUTEX_T 24
+#define __SIZEOF_PTHREAD_ATTR_T 36
+#define __SIZEOF_PTHREAD_RWLOCK_T 32
+#define __SIZEOF_PTHREAD_BARRIER_T 20
 #endif
 #define __SIZEOF_PTHREAD_MUTEXATTR_T 4
 #define __SIZEOF_PTHREAD_COND_T 48
@@ -49,7 +49,7 @@
 
 #ifndef __x86_64__
 /* Extra attributes for the cleanup functions.  */
-# define __cleanup_fct_attribute __attribute__ ((__regparm__ (1)))
+#define __cleanup_fct_attribute __attribute__((__regparm__(1)))
 #endif
 
-#endif	/* bits/pthreadtypes.h */
+#endif /* bits/pthreadtypes.h */

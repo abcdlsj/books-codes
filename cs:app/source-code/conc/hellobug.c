@@ -1,4 +1,4 @@
-/* 
+/*
  * hellobug.c - "hello, world" program with a bug
  */
 /* $begin hellobug */
@@ -6,19 +6,19 @@
 #include "csapp.h"
 void *thread(void *vargp);
 
-int main() 
+int main()
 {
     pthread_t tid;
 
     Pthread_create(&tid, NULL, thread, NULL);
-    exit(0); //line:conc:hellobug:exit
+    exit(0); // line:conc:hellobug:exit
 }
 
 /* Thread routine */
-void *thread(void *vargp) 
+void *thread(void *vargp)
 {
     Sleep(1);
-    printf("Hello, world!\n"); 
+    printf("Hello, world!\n");
     return NULL;
 }
 /* $end hellobug */

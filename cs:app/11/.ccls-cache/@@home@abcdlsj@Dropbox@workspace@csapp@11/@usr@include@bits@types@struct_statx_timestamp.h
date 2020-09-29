@@ -25,9 +25,9 @@
 
 struct statx_timestamp
 {
-  __int64_t tv_sec;
-  __uint32_t tv_nsec;
-  __int32_t __statx_timestamp_pad1[1];
+    __int64_t tv_sec;
+    __uint32_t tv_nsec;
+    __int32_t __statx_timestamp_pad1[1];
 };
 
 #endif /* __statx_timestamp_defined */

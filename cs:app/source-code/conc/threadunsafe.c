@@ -1,10 +1,11 @@
 /*
  * threadunsafe.c - demonstrates that various functions are thread-unsafe
- * because they always return the same address 
+ * because they always return the same address
  */
 #include "csapp.h"
 
-int main() {
+int main()
+{
     struct tm tm;
     time_t time_t;
     struct in_addr addr;
@@ -15,9 +16,8 @@ int main() {
     printf("gethostbyname : %p\n", gethostbyname("localhost"));
 
     inet_aton("127.0.0.1", &addr);
-    printf("gethostbyaddr : %p\n", 
-	   gethostbyaddr((const char *)&addr,
-			 sizeof(struct in_addr), AF_INET));
+    printf("gethostbyaddr : %p\n",
+           gethostbyaddr((const char *)&addr, sizeof(struct in_addr), AF_INET));
 
     printf("inet_ntoa     : %p\n", inet_ntoa(addr));
     exit(0);

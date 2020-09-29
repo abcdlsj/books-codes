@@ -7,7 +7,7 @@
    microsecond but also has a range of years.  */
 struct timeval
 {
-  __time_t tv_sec;		/* Seconds.  */
-  __suseconds_t tv_usec;	/* Microseconds.  */
+    __time_t tv_sec;       /* Seconds.  */
+    __suseconds_t tv_usec; /* Microseconds.  */
 };
 #endif

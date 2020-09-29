@@ -7,9 +7,9 @@ typedef unsigned packed_t;
 int xbyte(packed_t word, int bytenum);
 /* $end xbyte-proto */
 
-
 /* Correct version of xbyte */
-int xbyte(packed_t word, int bytenum) {
+int xbyte(packed_t word, int bytenum)
+{
     /* Solution omitted in this file */
 }
 
@@ -21,25 +21,24 @@ int xbyte_bad(packed_t word, int bytenum)
 int xbyte(packed_t word, int bytenum)
 /* $end xbyte-bad */
 #endif
-     /* $begin xbyte-bad */
+/* $begin xbyte-bad */
 {
-    return
-	(word >> (bytenum << 3)) & 0xFF;
+    return (word >> (bytenum << 3)) & 0xFF;
 }
 /* $end xbyte-bad */
 
-
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     int x;
     int i;
     if (*argv[1] == '0')
-	sscanf(argv[1], "%x", &x);
+        sscanf(argv[1], "%x", &x);
     else
-	sscanf(argv[1], "%d", &x);
-    for (i = 0; i < 4; i++) {
-	int xbb = xbyte_bad(x, i);
-	int xb = xbyte(x, i);
-	printf("x = %d (0x%x), bad = %d, good = %d\n",
-	       x, x, xbb, xb);
+        sscanf(argv[1], "%d", &x);
+    for (i = 0; i < 4; i++)
+    {
+        int xbb = xbyte_bad(x, i);
+        int xb = xbyte(x, i);
+        printf("x = %d (0x%x), bad = %d, good = %d\n", x, x, xbb, xb);
     }
 }

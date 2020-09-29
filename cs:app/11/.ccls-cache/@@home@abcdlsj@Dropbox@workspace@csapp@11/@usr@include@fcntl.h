@@ -19,8 +19,8 @@
  *	POSIX Standard: 6.5 File Control Operations	<fcntl.h>
  */
 
-#ifndef	_FCNTL_H
-#define	_FCNTL_H	1
+#ifndef _FCNTL_H
+#define _FCNTL_H 1
 
 #include <features.h>
 
@@ -37,10 +37,10 @@ __BEGIN_DECLS
 /* Detect if open needs mode as a third argument (or for openat as a fourth
    argument).  */
 #ifdef __O_TMPFILE
-# define __OPEN_NEEDS_MODE(oflag) \
-  (((oflag) & O_CREAT) != 0 || ((oflag) & __O_TMPFILE) == __O_TMPFILE)
+#define __OPEN_NEEDS_MODE(oflag)                                               \
+    (((oflag)&O_CREAT) != 0 || ((oflag)&__O_TMPFILE) == __O_TMPFILE)
 #else
-# define __OPEN_NEEDS_MODE(oflag) (((oflag) & O_CREAT) != 0)
+#define __OPEN_NEEDS_MODE(oflag) (((oflag)&O_CREAT) != 0)
 #endif
 
 /* POSIX.1-2001 specifies that these types are defined by <fcntl.h>.
@@ -48,96 +48,96 @@ __BEGIN_DECLS
    by any POSIX header, so we don't conditionalize the definitions here.  */
 #ifndef __mode_t_defined
 typedef __mode_t mode_t;
-# define __mode_t_defined
+#define __mode_t_defined
 #endif
 
 #ifndef __off_t_defined
-# ifndef __USE_FILE_OFFSET64
+#ifndef __USE_FILE_OFFSET64
 typedef __off_t off_t;
-# else
+#else
 typedef __off64_t off_t;
-# endif
-# define __off_t_defined
+#endif
+#define __off_t_defined
 #endif
 
 #if defined __USE_LARGEFILE64 && !defined __off64_t_defined
 typedef __off64_t off64_t;
-# define __off64_t_defined
+#define __off64_t_defined
 #endif
 
 #ifndef __pid_t_defined
 typedef __pid_t pid_t;
-# define __pid_t_defined
+#define __pid_t_defined
 #endif
 
 /* For XPG all symbols from <sys/stat.h> should also be available.  */
 #ifdef __USE_XOPEN2K8
-# include <bits/types/struct_timespec.h>
+#include <bits/types/struct_timespec.h>
 #endif
 #if defined __USE_XOPEN || defined __USE_XOPEN2K8
-# include <bits/stat.h>
+#include <bits/stat.h>
 
-# define S_IFMT		__S_IFMT
-# define S_IFDIR	__S_IFDIR
-# define S_IFCHR	__S_IFCHR
-# define S_IFBLK	__S_IFBLK
-# define S_IFREG	__S_IFREG
-# ifdef __S_IFIFO
-#  define S_IFIFO	__S_IFIFO
-# endif
-# ifdef __S_IFLNK
-#  define S_IFLNK	__S_IFLNK
-# endif
-# if (defined __USE_UNIX98 || defined __USE_XOPEN2K8) && defined __S_IFSOCK
-#  define S_IFSOCK	__S_IFSOCK
-# endif
+#define S_IFMT __S_IFMT
+#define S_IFDIR __S_IFDIR
+#define S_IFCHR __S_IFCHR
+#define S_IFBLK __S_IFBLK
+#define S_IFREG __S_IFREG
+#ifdef __S_IFIFO
+#define S_IFIFO __S_IFIFO
+#endif
+#ifdef __S_IFLNK
+#define S_IFLNK __S_IFLNK
+#endif
+#if (defined __USE_UNIX98 || defined __USE_XOPEN2K8) && defined __S_IFSOCK
+#define S_IFSOCK __S_IFSOCK
+#endif
 
 /* Protection bits.  */
 
-# define S_ISUID	__S_ISUID       /* Set user ID on execution.  */
-# define S_ISGID	__S_ISGID       /* Set group ID on execution.  */
+#define S_ISUID __S_ISUID /* Set user ID on execution.  */
+#define S_ISGID __S_ISGID /* Set group ID on execution.  */
 
-# if defined __USE_MISC || defined __USE_XOPEN
+#if defined __USE_MISC || defined __USE_XOPEN
 /* Save swapped text after use (sticky bit).  This is pretty well obsolete.  */
-#  define S_ISVTX	__S_ISVTX
-# endif
-
-# define S_IRUSR	__S_IREAD       /* Read by owner.  */
-# define S_IWUSR	__S_IWRITE      /* Write by owner.  */
-# define S_IXUSR	__S_IEXEC       /* Execute by owner.  */
-/* Read, write, and execute by owner.  */
-# define S_IRWXU	(__S_IREAD|__S_IWRITE|__S_IEXEC)
-
-# define S_IRGRP	(S_IRUSR >> 3)  /* Read by group.  */
-# define S_IWGRP	(S_IWUSR >> 3)  /* Write by group.  */
-# define S_IXGRP	(S_IXUSR >> 3)  /* Execute by group.  */
-/* Read, write, and execute by group.  */
-# define S_IRWXG	(S_IRWXU >> 3)
-
-# define S_IROTH	(S_IRGRP >> 3)  /* Read by others.  */
-# define S_IWOTH	(S_IWGRP >> 3)  /* Write by others.  */
-# define S_IXOTH	(S_IXGRP >> 3)  /* Execute by others.  */
-/* Read, write, and execute by others.  */
-# define S_IRWXO	(S_IRWXG >> 3)
+#define S_ISVTX __S_ISVTX
 #endif
 
-#ifdef	__USE_MISC
-# ifndef R_OK			/* Verbatim from <unistd.h>.  Ugh.  */
+#define S_IRUSR __S_IREAD  /* Read by owner.  */
+#define S_IWUSR __S_IWRITE /* Write by owner.  */
+#define S_IXUSR __S_IEXEC  /* Execute by owner.  */
+/* Read, write, and execute by owner.  */
+#define S_IRWXU (__S_IREAD | __S_IWRITE | __S_IEXEC)
+
+#define S_IRGRP (S_IRUSR >> 3) /* Read by group.  */
+#define S_IWGRP (S_IWUSR >> 3) /* Write by group.  */
+#define S_IXGRP (S_IXUSR >> 3) /* Execute by group.  */
+/* Read, write, and execute by group.  */
+#define S_IRWXG (S_IRWXU >> 3)
+
+#define S_IROTH (S_IRGRP >> 3) /* Read by others.  */
+#define S_IWOTH (S_IWGRP >> 3) /* Write by others.  */
+#define S_IXOTH (S_IXGRP >> 3) /* Execute by others.  */
+/* Read, write, and execute by others.  */
+#define S_IRWXO (S_IRWXG >> 3)
+#endif
+
+#ifdef __USE_MISC
+#ifndef R_OK /* Verbatim from <unistd.h>.  Ugh.  */
 /* Values for the second argument to access.
    These may be OR'd together.  */
-#  define R_OK	4		/* Test for read permission.  */
-#  define W_OK	2		/* Test for write permission.  */
-#  define X_OK	1		/* Test for execute permission.  */
-#  define F_OK	0		/* Test for existence.  */
-# endif
+#define R_OK 4 /* Test for read permission.  */
+#define W_OK 2 /* Test for write permission.  */
+#define X_OK 1 /* Test for execute permission.  */
+#define F_OK 0 /* Test for existence.  */
+#endif
 #endif /* Use misc.  */
 
 /* XPG wants the following symbols.   <stdio.h> has the same definitions.  */
 #if defined __USE_XOPEN || defined __USE_XOPEN2K8
-# define SEEK_SET	0	/* Seek from beginning of file.  */
-# define SEEK_CUR	1	/* Seek from current position.  */
-# define SEEK_END	2	/* Seek from end of file.  */
-#endif	/* XPG */
+#define SEEK_SET 0 /* Seek from beginning of file.  */
+#define SEEK_CUR 1 /* Seek from current position.  */
+#define SEEK_END 2 /* Seek from end of file.  */
+#endif             /* XPG */
 
 /* The constants AT_REMOVEDIR and AT_EACCESS have the same value.  AT_EACCESS
    is meaningful only to faccessat, while AT_REMOVEDIR is meaningful only to
@@ -146,25 +146,29 @@ typedef __pid_t pid_t;
    faccessat would be undefined behavior and thus treating it equivalent to
    AT_EACCESS is valid undefined behavior.  */
 #ifdef __USE_ATFILE
-# define AT_FDCWD		-100	/* Special value used to indicate
-					   the *at functions should use the
-					   current working directory. */
-# define AT_SYMLINK_NOFOLLOW	0x100	/* Do not follow symbolic links.  */
-# define AT_REMOVEDIR		0x200	/* Remove directory instead of
-					   unlinking file.  */
-# define AT_SYMLINK_FOLLOW	0x400	/* Follow symbolic links.  */
-# ifdef __USE_GNU
-#  define AT_NO_AUTOMOUNT	0x800	/* Suppress terminal automount
-					   traversal.  */
-#  define AT_EMPTY_PATH		0x1000	/* Allow empty relative pathname.  */
-#  define AT_STATX_SYNC_TYPE	0x6000
-#  define AT_STATX_SYNC_AS_STAT	0x0000
-#  define AT_STATX_FORCE_SYNC	0x2000
-#  define AT_STATX_DONT_SYNC	0x4000
-#  define AT_RECURSIVE		0x8000	/* Apply to the entire subtree.  */
-# endif
-# define AT_EACCESS		0x200	/* Test access permitted for
-					   effective IDs, not real IDs.  */
+#define AT_FDCWD                                                               \
+    -100                          /* Special value used to indicate            \
+                                     the *at functions should use the          \
+                                     current working directory. */
+#define AT_SYMLINK_NOFOLLOW 0x100 /* Do not follow symbolic links.  */
+#define AT_REMOVEDIR                                                           \
+    0x200                       /* Remove directory instead of                 \
+                                   unlinking file.  */
+#define AT_SYMLINK_FOLLOW 0x400 /* Follow symbolic links.  */
+#ifdef __USE_GNU
+#define AT_NO_AUTOMOUNT                                                        \
+    0x800                    /* Suppress terminal automount                    \
+                                traversal.  */
+#define AT_EMPTY_PATH 0x1000 /* Allow empty relative pathname.  */
+#define AT_STATX_SYNC_TYPE 0x6000
+#define AT_STATX_SYNC_AS_STAT 0x0000
+#define AT_STATX_FORCE_SYNC 0x2000
+#define AT_STATX_DONT_SYNC 0x4000
+#define AT_RECURSIVE 0x8000 /* Apply to the entire subtree.  */
+#endif
+#define AT_EACCESS                                                             \
+    0x200 /* Test access permitted for                                         \
+             effective IDs, not real IDs.  */
 #endif
 
 /* Do the file control operation described by CMD on FD.
@@ -173,16 +177,16 @@ typedef __pid_t pid_t;
    This function is a cancellation point and therefore not marked with
    __THROW.  */
 #ifndef __USE_FILE_OFFSET64
-extern int fcntl (int __fd, int __cmd, ...);
+extern int fcntl(int __fd, int __cmd, ...);
 #else
-# ifdef __REDIRECT
-extern int __REDIRECT (fcntl, (int __fd, int __cmd, ...), fcntl64);
-# else
-#  define fcntl fcntl64
-# endif
+#ifdef __REDIRECT
+extern int __REDIRECT(fcntl, (int __fd, int __cmd, ...), fcntl64);
+#else
+#define fcntl fcntl64
+#endif
 #endif
 #ifdef __USE_LARGEFILE64
-extern int fcntl64 (int __fd, int __cmd, ...);
+extern int fcntl64(int __fd, int __cmd, ...);
 #endif
 
 /* Open FILE and return a new file descriptor for it, or -1 on error.
@@ -193,17 +197,17 @@ extern int fcntl64 (int __fd, int __cmd, ...);
    This function is a cancellation point and therefore not marked with
    __THROW.  */
 #ifndef __USE_FILE_OFFSET64
-extern int open (const char *__file, int __oflag, ...) __nonnull ((1));
+extern int open(const char *__file, int __oflag, ...) __nonnull((1));
 #else
-# ifdef __REDIRECT
-extern int __REDIRECT (open, (const char *__file, int __oflag, ...), open64)
-     __nonnull ((1));
-# else
-#  define open open64
-# endif
+#ifdef __REDIRECT
+extern int __REDIRECT(open, (const char *__file, int __oflag, ...), open64)
+    __nonnull((1));
+#else
+#define open open64
+#endif
 #endif
 #ifdef __USE_LARGEFILE64
-extern int open64 (const char *__file, int __oflag, ...) __nonnull ((1));
+extern int open64(const char *__file, int __oflag, ...) __nonnull((1));
 #endif
 
 #ifdef __USE_ATFILE
@@ -216,21 +220,21 @@ extern int open64 (const char *__file, int __oflag, ...) __nonnull ((1));
 
    This function is a cancellation point and therefore not marked with
    __THROW.  */
-# ifndef __USE_FILE_OFFSET64
-extern int openat (int __fd, const char *__file, int __oflag, ...)
-     __nonnull ((2));
-# else
-#  ifdef __REDIRECT
-extern int __REDIRECT (openat, (int __fd, const char *__file, int __oflag,
-				...), openat64) __nonnull ((2));
-#  else
-#   define openat openat64
-#  endif
-# endif
-# ifdef __USE_LARGEFILE64
-extern int openat64 (int __fd, const char *__file, int __oflag, ...)
-     __nonnull ((2));
-# endif
+#ifndef __USE_FILE_OFFSET64
+extern int openat(int __fd, const char *__file, int __oflag, ...)
+    __nonnull((2));
+#else
+#ifdef __REDIRECT
+extern int __REDIRECT(openat, (int __fd, const char *__file, int __oflag, ...),
+                      openat64) __nonnull((2));
+#else
+#define openat openat64
+#endif
+#endif
+#ifdef __USE_LARGEFILE64
+extern int openat64(int __fd, const char *__file, int __oflag, ...)
+    __nonnull((2));
+#endif
 #endif
 
 /* Create and open FILE, with mode MODE.  This takes an `int' MODE
@@ -239,21 +243,21 @@ extern int openat64 (int __fd, const char *__file, int __oflag, ...)
    This function is a cancellation point and therefore not marked with
    __THROW.  */
 #ifndef __USE_FILE_OFFSET64
-extern int creat (const char *__file, mode_t __mode) __nonnull ((1));
+extern int creat(const char *__file, mode_t __mode) __nonnull((1));
 #else
-# ifdef __REDIRECT
-extern int __REDIRECT (creat, (const char *__file, mode_t __mode),
-		       creat64) __nonnull ((1));
-# else
-#  define creat creat64
-# endif
+#ifdef __REDIRECT
+extern int __REDIRECT(creat, (const char *__file, mode_t __mode), creat64)
+    __nonnull((1));
+#else
+#define creat creat64
+#endif
 #endif
 #ifdef __USE_LARGEFILE64
-extern int creat64 (const char *__file, mode_t __mode) __nonnull ((1));
+extern int creat64(const char *__file, mode_t __mode) __nonnull((1));
 #endif
 
-#if !defined F_LOCK && (defined __USE_MISC || (defined __USE_XOPEN_EXTENDED \
-					       && !defined __USE_POSIX))
+#if !defined F_LOCK && (defined __USE_MISC || (defined __USE_XOPEN_EXTENDED && \
+                                               !defined __USE_POSIX))
 /* NOTE: These declarations also appear in <unistd.h>; be sure to keep both
    files consistent.  Some systems have them there and some here, and some
    software depends on the macros being defined without including both.  */
@@ -262,71 +266,70 @@ extern int creat64 (const char *__file, mode_t __mode) __nonnull ((1));
    LEN is always relative to the current file position.
    The CMD argument is one of the following.  */
 
-# define F_ULOCK 0	/* Unlock a previously locked region.  */
-# define F_LOCK  1	/* Lock a region for exclusive use.  */
-# define F_TLOCK 2	/* Test and lock a region for exclusive use.  */
-# define F_TEST  3	/* Test a region for other processes locks.  */
+#define F_ULOCK 0 /* Unlock a previously locked region.  */
+#define F_LOCK 1  /* Lock a region for exclusive use.  */
+#define F_TLOCK 2 /* Test and lock a region for exclusive use.  */
+#define F_TEST 3  /* Test a region for other processes locks.  */
 
-# ifndef __USE_FILE_OFFSET64
-extern int lockf (int __fd, int __cmd, off_t __len);
-# else
-#  ifdef __REDIRECT
-extern int __REDIRECT (lockf, (int __fd, int __cmd, __off64_t __len), lockf64);
-#  else
-#   define lockf lockf64
-#  endif
-# endif
-# ifdef __USE_LARGEFILE64
-extern int lockf64 (int __fd, int __cmd, off64_t __len);
-# endif
+#ifndef __USE_FILE_OFFSET64
+extern int lockf(int __fd, int __cmd, off_t __len);
+#else
+#ifdef __REDIRECT
+extern int __REDIRECT(lockf, (int __fd, int __cmd, __off64_t __len), lockf64);
+#else
+#define lockf lockf64
+#endif
+#endif
+#ifdef __USE_LARGEFILE64
+extern int lockf64(int __fd, int __cmd, off64_t __len);
+#endif
 #endif
 
 #ifdef __USE_XOPEN2K
 /* Advice the system about the expected behaviour of the application with
    respect to the file associated with FD.  */
-# ifndef __USE_FILE_OFFSET64
-extern int posix_fadvise (int __fd, off_t __offset, off_t __len,
-			  int __advise) __THROW;
-# else
- # ifdef __REDIRECT_NTH
-extern int __REDIRECT_NTH (posix_fadvise, (int __fd, __off64_t __offset,
-					   __off64_t __len, int __advise),
-			   posix_fadvise64);
-#  else
-#   define posix_fadvise posix_fadvise64
-#  endif
-# endif
-# ifdef __USE_LARGEFILE64
-extern int posix_fadvise64 (int __fd, off64_t __offset, off64_t __len,
-			    int __advise) __THROW;
-# endif
-
+#ifndef __USE_FILE_OFFSET64
+extern int posix_fadvise(int __fd, off_t __offset, off_t __len,
+                         int __advise) __THROW;
+#else
+#ifdef __REDIRECT_NTH
+extern int __REDIRECT_NTH(posix_fadvise,
+                          (int __fd, __off64_t __offset, __off64_t __len,
+                           int __advise),
+                          posix_fadvise64);
+#else
+#define posix_fadvise posix_fadvise64
+#endif
+#endif
+#ifdef __USE_LARGEFILE64
+extern int posix_fadvise64(int __fd, off64_t __offset, off64_t __len,
+                           int __advise) __THROW;
+#endif
 
 /* Reserve storage for the data of the file associated with FD.
 
    This function is a possible cancellation point and therefore not
    marked with __THROW.  */
-# ifndef __USE_FILE_OFFSET64
-extern int posix_fallocate (int __fd, off_t __offset, off_t __len);
-# else
- # ifdef __REDIRECT
-extern int __REDIRECT (posix_fallocate, (int __fd, __off64_t __offset,
-					 __off64_t __len),
-		       posix_fallocate64);
-#  else
-#   define posix_fallocate posix_fallocate64
-#  endif
-# endif
-# ifdef __USE_LARGEFILE64
-extern int posix_fallocate64 (int __fd, off64_t __offset, off64_t __len);
-# endif
+#ifndef __USE_FILE_OFFSET64
+extern int posix_fallocate(int __fd, off_t __offset, off_t __len);
+#else
+#ifdef __REDIRECT
+extern int __REDIRECT(posix_fallocate,
+                      (int __fd, __off64_t __offset, __off64_t __len),
+                      posix_fallocate64);
+#else
+#define posix_fallocate posix_fallocate64
+#endif
+#endif
+#ifdef __USE_LARGEFILE64
+extern int posix_fallocate64(int __fd, off64_t __offset, off64_t __len);
+#endif
 #endif
 
-
 /* Define some inlines helping to catch common problems.  */
-#if __USE_FORTIFY_LEVEL > 0 && defined __fortify_function \
-    && defined __va_arg_pack_len
-# include <bits/fcntl2.h>
+#if __USE_FORTIFY_LEVEL > 0 && defined __fortify_function &&                   \
+    defined __va_arg_pack_len
+#include <bits/fcntl2.h>
 #endif
 
 __END_DECLS

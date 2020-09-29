@@ -2,7 +2,7 @@
 
 /* $begin fork2 */
 /* $begin wasidefork2 */
-int main() 
+int main()
 {
     Fork();
     Fork();

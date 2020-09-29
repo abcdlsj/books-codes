@@ -1,14 +1,14 @@
 /* Benchmark factorials */
-#include <stdio.h>
 #include "cpe.h"
+#include <stdio.h>
 
 #define ASIZE 1024
 
 long rfact(long n)
 {
     if (n <= 1)
-	return 1;
-    return n * rfact(n-1);
+        return 1;
+    return n * rfact(n - 1);
 }
 
 /* $begin fact */
@@ -18,7 +18,7 @@ long fact(long n)
     long result = 1;
 
     for (i = 2; i <= n; i++)
-	result = result * i;
+        result = result * i;
     return result;
 }
 /* $end fact */
@@ -29,11 +29,12 @@ long fact_u2a(long n)
     long i;
     long result = 1;
 
-    for (i = 2; i <= n-1; i +=2) {
-	result = (result * i) * (i+1);
+    for (i = 2; i <= n - 1; i += 2)
+    {
+        result = (result * i) * (i + 1);
     }
     for (; i <= n; i++)
-	result *= i;
+        result *= i;
     return result;
 }
 /* $end fact_u2 */
@@ -43,13 +44,14 @@ long fact_u2b(long n)
     long i;
     long result = 1;
 
-    for (i = 2; i <= n-1; i +=2) {
-	/* $begin fact_u2line */
-	result = result * (i * (i+1));
-	/* $end fact_u2line */
+    for (i = 2; i <= n - 1; i += 2)
+    {
+        /* $begin fact_u2line */
+        result = result * (i * (i + 1));
+        /* $end fact_u2line */
     }
     for (; i <= n; i++)
-	result *= i;
+        result *= i;
     return result;
 }
 
@@ -59,26 +61,27 @@ long fact_u2c(long n)
     long result0 = 1;
     long result1 = 1;
 
-    for (i = 2; i <= n-1; i+=2) {
-	result0 *= i;
-	result1 *= (i+1);
+    for (i = 2; i <= n - 1; i += 2)
+    {
+        result0 *= i;
+        result1 *= (i + 1);
     }
     for (; i <= n; i++)
-	result0 *= i;
+        result0 *= i;
     return result0 * result1;
 }
-
 
 long fact_u3a(long n)
 {
     long i;
     long result = 1;
 
-    for (i = 2; i <= n-2; i +=3) {
-	result = (result * i) * (i+1) * (i+2);
+    for (i = 2; i <= n - 2; i += 3)
+    {
+        result = (result * i) * (i + 1) * (i + 2);
     }
     for (; i <= n; i++)
-	result *= i;
+        result *= i;
     return result;
 }
 
@@ -87,11 +90,12 @@ long fact_u3b(long n)
     long i;
     long result = 1;
 
-    for (i = 2; i <= n-2; i +=3) {
-	result = result * (i * (i+1) * (i+2));
+    for (i = 2; i <= n - 2; i += 3)
+    {
+        result = result * (i * (i + 1) * (i + 2));
     }
     for (; i <= n; i++)
-	result *= i;
+        result *= i;
     return result;
 }
 
@@ -102,13 +106,14 @@ long fact_u3c(long n)
     long result1 = 1;
     long result2 = 1;
 
-    for (i = 2; i <= n-2; i+=3) {
-	result0 *= i;
-	result1 *= (i+1);
-	result2 *= (i+2);
+    for (i = 2; i <= n - 2; i += 3)
+    {
+        result0 *= i;
+        result1 *= (i + 1);
+        result2 *= (i + 2);
     }
     for (; i <= n; i++)
-	result0 *= i;
+        result0 *= i;
     return result0 * result1 * result2;
 }
 
@@ -116,37 +121,22 @@ long fact_u3c(long n)
 long rfact_a(long n)
 {
     if (n <= 1)
-	return 1;
-    return n * -rfact_a(n-1);
+        return 1;
+    return n * -rfact_a(n - 1);
 }
-
-
 
 typedef long (*fact_fun)(long);
 
 #define TEST_COUNT 9
 
-static fact_fun funs[TEST_COUNT] =
-    { rfact, fact,
-      fact_u2a, fact_u2b, fact_u2c,
-      fact_u3a, fact_u3b, fact_u3c,
-      rfact_a
-    };
-    
+static fact_fun funs[TEST_COUNT] = {rfact,    fact,     fact_u2a,
+                                    fact_u2b, fact_u2c, fact_u3a,
+                                    fact_u3b, fact_u3c, rfact_a};
 
-static char *test_descr[TEST_COUNT] =
-    {
-	"Recursive",
-	"Iterative",
-	"Unroll 2X Assoc 1",
-	"Unroll 2X Assoc 2",
-	"Unroll 2X Split",
-	"Unroll 3X Assoc 1",
-	"Unroll 3X Assoc 2",
-	"Unroll 3X Split",
-	"Expansion of recursion"
-    };
-
+static char *test_descr[TEST_COUNT] = {
+    "Recursive",         "Iterative",       "Unroll 2X Assoc 1",
+    "Unroll 2X Assoc 2", "Unroll 2X Split", "Unroll 3X Assoc 1",
+    "Unroll 3X Assoc 2", "Unroll 3X Split", "Expansion of recursion"};
 
 long idx = 0;
 
@@ -159,20 +149,21 @@ static void test(long n)
 static void ftest(long i)
 {
     long n;
-    for (n = 0; n < 10; n++) {
-	if (funs[i](n) != rfact(n)) {
-	    printf("Oops.  %ld! yields %ld, should be %ld\n",
-		   n, funs[i](n), rfact(n));
-	    break;
-	}
+    for (n = 0; n < 10; n++)
+    {
+        if (funs[i](n) != rfact(n))
+        {
+            printf("Oops.  %ld! yields %ld, should be %ld\n", n, funs[i](n),
+                   rfact(n));
+            break;
+        }
     }
 }
 
-static void run_test(long i) 
+static void run_test(long i)
 {
     double cpe;
-    printf("Description: %s, ",
-	   test_descr[i]);
+    printf("Description: %s, ", test_descr[i]);
     idx = i;
     cpe = find_cpe(test, ASIZE);
     /* print results */
@@ -184,6 +175,6 @@ int main()
 {
     int i;
     for (i = 0; i < TEST_COUNT; i++)
-	run_test(i);
+        run_test(i);
     return 0;
 }

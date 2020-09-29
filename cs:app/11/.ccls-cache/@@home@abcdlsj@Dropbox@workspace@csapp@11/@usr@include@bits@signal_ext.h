@@ -17,7 +17,7 @@
    <https://www.gnu.org/licenses/>.  */
 
 #ifndef _SIGNAL_H
-# error "Never include <bits/signal_ext.h> directly; use <signal.h> instead."
+#error "Never include <bits/signal_ext.h> directly; use <signal.h> instead."
 #endif
 
 #ifdef __USE_GNU
@@ -26,6 +26,6 @@
    identified by TGID.  This function behaves like kill, but also
    fails with ESRCH if the specified TID does not belong to the
    specified thread group.  */
-extern int tgkill (__pid_t __tgid, __pid_t __tid, int __signal);
+extern int tgkill(__pid_t __tgid, __pid_t __tid, int __signal);
 
 #endif /* __USE_GNU */

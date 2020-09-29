@@ -4,8 +4,10 @@
 
 int main()
 {
-    if (!fork()) {
-        while(1);
+    if (!fork())
+    {
+        while (1)
+            ;
     }
     exit(0);
 }

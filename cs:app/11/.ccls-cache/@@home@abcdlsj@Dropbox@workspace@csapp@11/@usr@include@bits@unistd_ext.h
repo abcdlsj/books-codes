@@ -17,7 +17,7 @@
    <https://www.gnu.org/licenses/>.  */
 
 #ifndef _UNISTD_H
-# error "Never include <bits/unistd_ext.h> directly; use <unistd.h> instead."
+#error "Never include <bits/unistd_ext.h> directly; use <unistd.h> instead."
 #endif
 
 #ifdef __USE_GNU
@@ -31,6 +31,6 @@
    uniquely identifies a thread only while this thread is running; a
    TID can be reused once a thread has exited, even if the thread is
    not detached and has not been joined.  */
-extern __pid_t gettid (void) __THROW;
+extern __pid_t gettid(void) __THROW;
 
 #endif

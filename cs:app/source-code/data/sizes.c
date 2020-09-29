@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
-
-int main() 
+int main()
 {
     printf("sizeof(unsigned) = %ld\n", sizeof(unsigned));
     printf("sizeof(size_t) = %ld\n", sizeof(size_t));
@@ -18,4 +16,3 @@ int main()
     printf("sizeof(char *) = %ld\n", sizeof(char *));
     exit(0);
 }
-

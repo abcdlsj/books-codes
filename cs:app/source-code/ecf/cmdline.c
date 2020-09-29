@@ -2,7 +2,8 @@
 
 int main(int argc, char *argv[], char *envp[])
 {
-    if (argc < 2) {
+    if (argc < 2)
+    {
         printf("usage: %s <n>\n", argv[0]);
         return 1;
     }

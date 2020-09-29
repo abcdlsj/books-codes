@@ -9,8 +9,8 @@
    That name should not be used in new code.  */
 typedef struct _G_fpos_t
 {
-  __off_t __pos;
-  __mbstate_t __state;
+    __off_t __pos;
+    __mbstate_t __state;
 } __fpos_t;
 
 #endif

@@ -12,9 +12,10 @@ int sum(int x, int y)
 /* Added to get nop at the end of sum */
 int p(int x)
 {
-  return sum(x,x);
+    return sum(x, x);
 }
 
-int main() {
+int main()
+{
     return 0;
 }

@@ -20,10 +20,11 @@
  * use the one here.
  */
 #undef __FD_SETSIZE
-#define __FD_SETSIZE	1024
+#define __FD_SETSIZE 1024
 
-typedef struct {
-	unsigned long fds_bits[__FD_SETSIZE / (8 * sizeof(long))];
+typedef struct
+{
+    unsigned long fds_bits[__FD_SETSIZE / (8 * sizeof(long))];
 } __kernel_fd_set;
 
 /* Type of a signal handler.  */

@@ -29,27 +29,27 @@
    argument of the statx function.)  */
 struct statx
 {
-  __uint32_t stx_mask;
-  __uint32_t stx_blksize;
-  __uint64_t stx_attributes;
-  __uint32_t stx_nlink;
-  __uint32_t stx_uid;
-  __uint32_t stx_gid;
-  __uint16_t stx_mode;
-  __uint16_t __statx_pad1[1];
-  __uint64_t stx_ino;
-  __uint64_t stx_size;
-  __uint64_t stx_blocks;
-  __uint64_t stx_attributes_mask;
-  struct statx_timestamp stx_atime;
-  struct statx_timestamp stx_btime;
-  struct statx_timestamp stx_ctime;
-  struct statx_timestamp stx_mtime;
-  __uint32_t stx_rdev_major;
-  __uint32_t stx_rdev_minor;
-  __uint32_t stx_dev_major;
-  __uint32_t stx_dev_minor;
-  __uint64_t __statx_pad2[14];
+    __uint32_t stx_mask;
+    __uint32_t stx_blksize;
+    __uint64_t stx_attributes;
+    __uint32_t stx_nlink;
+    __uint32_t stx_uid;
+    __uint32_t stx_gid;
+    __uint16_t stx_mode;
+    __uint16_t __statx_pad1[1];
+    __uint64_t stx_ino;
+    __uint64_t stx_size;
+    __uint64_t stx_blocks;
+    __uint64_t stx_attributes_mask;
+    struct statx_timestamp stx_atime;
+    struct statx_timestamp stx_btime;
+    struct statx_timestamp stx_ctime;
+    struct statx_timestamp stx_mtime;
+    __uint32_t stx_rdev_major;
+    __uint32_t stx_rdev_minor;
+    __uint32_t stx_dev_major;
+    __uint32_t stx_dev_minor;
+    __uint64_t __statx_pad2[14];
 };
 
 #endif /* __statx_defined */

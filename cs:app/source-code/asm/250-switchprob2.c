@@ -32,34 +32,35 @@ long int switcher(long int a, long int b, long int c)
 long int switcher(long int a, long int b, long int c)
 {
     long int answer;
-    switch(a) {
+    switch (a)
+    {
     case 5:
-	c = b ^ 15;
-	/* Fall through */
+        c = b ^ 15;
+        /* Fall through */
     case 0:
-	answer = c + 112;
-	break;
+        answer = c + 112;
+        break;
     case 2:
     case 7:
-	answer = (c + b) << 2; 
-	break;
+        answer = (c + b) << 2;
+        break;
     case 4:
-	answer = a;  
-	break;
+        answer = a;
+        break;
     default:
-	answer = b;
+        answer = b;
     }
     return answer;
 }
 /* $end switchprob2-ans-c */
 
-int main(int  argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     int args[3] = {1, 2, 3};
     int i;
-    for (i = 0; i < 3 && i < argc-1; i++)
-	args[i] = atoi(argv[i+1]);
-    printf("Switcher(%d, %d, %d) --> %d\n",
-	   args[0], args[1], args[2],
-	   switcher(args[0], args[1], args[2]));
+    for (i = 0; i < 3 && i < argc - 1; i++)
+        args[i] = atoi(argv[i + 1]);
+    printf("Switcher(%d, %d, %d) --> %d\n", args[0], args[1], args[2],
+           switcher(args[0], args[1], args[2]));
     return 0;
 }

@@ -20,16 +20,16 @@
 #define _BITS_SS_FLAGS_H 1
 
 #if !defined _SIGNAL_H && !defined _SYS_UCONTEXT_H
-# error "Never include this file directly.  Use <signal.h> instead"
+#error "Never include this file directly.  Use <signal.h> instead"
 #endif
 
 /* Possible values for `ss_flags'.  */
 enum
 {
-  SS_ONSTACK = 1,
-#define SS_ONSTACK	SS_ONSTACK
-  SS_DISABLE
-#define SS_DISABLE	SS_DISABLE
+    SS_ONSTACK = 1,
+#define SS_ONSTACK SS_ONSTACK
+    SS_DISABLE
+#define SS_DISABLE SS_DISABLE
 };
 
 #endif /* bits/ss_flags.h */

@@ -16,11 +16,13 @@ long addb(unsigned char b);
 
 long movi(unsigned char b);
 
-void show_val(int x) {
+void show_val(int x)
+{
     unsigned byte = x & 0xFF;
-    int sbyte = ((signed char) byte << 24) >> 24;
+    int sbyte = ((signed char)byte << 24) >> 24;
 
-    printf("Byte value.  Unsigned = %d, signed = %d, hex = 0x%x\n", byte, sbyte, byte);
+    printf("Byte value.  Unsigned = %d, signed = %d, hex = 0x%x\n", byte, sbyte,
+           byte);
     long movsblval = movsbl(byte);
     printf("movsbl = %ld (0x%lx)\n", movsblval, movsblval);
     long movzblval = movzbl(byte);
@@ -33,8 +35,9 @@ void show_val(int x) {
     printf("movi = %ld (0x%lx)\n", movival, movival);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     int i;
     for (i = 1; i < argc; i++)
-	show_val(atoi(argv[i]));
+        show_val(atoi(argv[i]));
 }

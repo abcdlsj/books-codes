@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include "combine.h"
+#include <stdlib.h>
 
 /* Combining functions */
 
@@ -11,12 +11,13 @@ void combine1(vec_ptr v, data_t *dest)
     long i;
 
     *dest = IDENT;
-    for (i = 0; i < vec_length(v); i++) {
-	data_t val;
-	get_vec_element(v, i, &val);
-	/* $begin combineline */
-	*dest = *dest OP val;
-	/* $end combineline */
+    for (i = 0; i < vec_length(v); i++)
+    {
+        data_t val;
+        get_vec_element(v, i, &val);
+        /* $begin combineline */
+        *dest = *dest OP val;
+        /* $end combineline */
     }
 }
 /* $end combine1 */
@@ -30,10 +31,11 @@ void combine2(vec_ptr v, data_t *dest)
     long length = vec_length(v);
 
     *dest = IDENT;
-    for (i = 0; i < length; i++) {
-	data_t val;
-	get_vec_element(v, i, &val);
-	*dest = *dest OP val;
+    for (i = 0; i < length; i++)
+    {
+        data_t val;
+        get_vec_element(v, i, &val);
+        *dest = *dest OP val;
     }
 }
 /* $end combine2 */
@@ -48,8 +50,9 @@ void combine3(vec_ptr v, data_t *dest)
     data_t *data = get_vec_start(v);
 
     *dest = IDENT;
-    for (i = 0; i < length; i++) {
-	*dest = *dest OP data[i];
+    for (i = 0; i < length; i++)
+    {
+        *dest = *dest OP data[i];
     }
 }
 /* $end combine3 */
@@ -65,11 +68,12 @@ void combine3w(vec_ptr v, data_t *dest)
     data_t acc = IDENT;
 
     /* Initialize in event length <= 0 */
-    *dest = acc; 
+    *dest = acc;
 
-    for (i = 0; i < length; i++) {
-	acc = acc OP data[i];
-	*dest = acc;
+    for (i = 0; i < length; i++)
+    {
+        acc = acc OP data[i];
+        *dest = acc;
     }
 }
 /* $end combine3w */
@@ -84,8 +88,9 @@ void combine4(vec_ptr v, data_t *dest)
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
-    for (i = 0; i < length; i++) {
-	acc = acc OP data[i];
+    for (i = 0; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
@@ -100,32 +105,33 @@ void combine4b(vec_ptr v, data_t *dest)
     long length = vec_length(v);
     data_t acc = IDENT;
 
-    for (i = 0; i < length; i++) {
-	if (i >= 0 && i < v->len) {
-	    acc = acc OP v->data[i];
-	}
+    for (i = 0; i < length; i++)
+    {
+        if (i >= 0 && i < v->len)
+        {
+            acc = acc OP v->data[i];
+        }
     }
     *dest = acc;
 }
 /* $end combine4b */
 
-
-char combine4p_descr[] = "combine4p: Pointer reference, accumulate in temporary";
+char combine4p_descr[] =
+    "combine4p: Pointer reference, accumulate in temporary";
 /* $begin combine4p */
 /* Accumulate in local variable, pointer version */
 void combine4p(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    data_t *dend = data+length;
+    data_t *dend = data + length;
     data_t acc = IDENT;
 
     for (; data < dend; data++)
-	acc = acc OP *data;
+        acc = acc OP * data;
     *dest = acc;
 }
 /* $end combine4p */
-
 
 char combine5_descr[] = "combine5: Array code, unrolled by 2";
 /* $begin combine5 */
@@ -134,20 +140,22 @@ void combine5(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-1;
+    long limit = length - 1;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 2 elements at a time */
-    for (i = 0; i < limit; i+=2) {
-      /* $begin combine5-update */
-	acc = (acc OP data[i]) OP data[i+1];
-      /* $end combine5-update */
+    for (i = 0; i < limit; i += 2)
+    {
+        /* $begin combine5-update */
+        acc = (acc OP data[i])OP data[i + 1];
+        /* $end combine5-update */
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
@@ -158,24 +166,25 @@ void unroll3a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-2;
+    long limit = length - 2;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 3 elements at a time */
-    for (i = 0; i < limit; i+=3) {
-	acc = acc OP data[i];
-	acc = acc OP data[i+1];
-	acc = acc OP data[i+2];
+    for (i = 0; i < limit; i += 3)
+    {
+        acc = acc OP data[i];
+        acc = acc OP data[i + 1];
+        acc = acc OP data[i + 2];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
-
 
 char combine5p_descr[] = "combine5p: Pointer code, unrolled by 2, for loop";
 /* $begin combine5p */
@@ -183,18 +192,20 @@ char combine5p_descr[] = "combine5p: Pointer code, unrolled by 2, for loop";
 void combine5p(vec_ptr v, data_t *dest)
 {
     data_t *data = get_vec_start(v);
-    data_t *dend = data+vec_length(v);
-    data_t *dlimit = dend-1;
+    data_t *dend = data + vec_length(v);
+    data_t *dlimit = dend - 1;
     data_t acc = IDENT;
 
     /* Combine 3 elements at a time */
-    for (; data < dlimit; data += 2) {
-	acc = acc OP data[0] OP data[1];
+    for (; data < dlimit; data += 2)
+    {
+        acc = acc OP data[0] OP data[1];
     }
 
     /* Finish any remaining elements */
-    for (; data < dend; data++) {
-	acc = acc OP data[0];
+    for (; data < dend; data++)
+    {
+        acc = acc OP data[0];
     }
     *dest = acc;
 }
@@ -205,43 +216,46 @@ void unroll2aw_combine(vec_ptr v, data_t *dest)
 {
     long i = 0;
     long length = vec_length(v);
-    long limit = length-1;
+    long limit = length - 1;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 2 elements at a time */
-    while (i < limit) {
-	acc = acc OP data[i];
-	i+= 2;
-	acc = acc OP data[i-1];
+    while (i < limit)
+    {
+        acc = acc OP data[i];
+        i += 2;
+        acc = acc OP data[i - 1];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
-
 
 char unroll4a_descr[] = "unroll4a: Array code, unrolled by 4";
 void unroll4a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-3;
+    long limit = length - 3;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 4 elements at a time */
-    for (i = 0; i < limit; i+=4) {
-	acc = acc OP data[i] OP data[i+1];
-	acc = acc OP data[i+2] OP data[i+3];
+    for (i = 0; i < limit; i += 4)
+    {
+        acc = acc OP data[i] OP data[i + 1];
+        acc = acc OP data[i + 2] OP data[i + 3];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
@@ -258,20 +272,22 @@ void unroll5a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-4;
+    long limit = length - 4;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 5 elements at a time */
-    for (i = 0; i < limit; i+=5) {
-	acc = acc OP data[i]   OP data[i+1];
-	acc = acc OP data[i+2] OP data[i+3];
-	acc = acc OP data[i+4];
+    for (i = 0; i < limit; i += 5)
+    {
+        acc = acc OP data[i] OP data[i + 1];
+        acc = acc OP data[i + 2] OP data[i + 3];
+        acc = acc OP data[i + 4];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
@@ -282,20 +298,22 @@ void unroll6a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-5;
+    long limit = length - 5;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 6 elements at a time */
-    for (i = 0; i < limit; i+=6) {
-	acc = acc OP data[i] OP data[i+1];
-	acc = acc OP data[i+2] OP data[i+3];
-	acc = acc OP data[i+4] OP data[i+5];
+    for (i = 0; i < limit; i += 6)
+    {
+        acc = acc OP data[i] OP data[i + 1];
+        acc = acc OP data[i + 2] OP data[i + 3];
+        acc = acc OP data[i + 4] OP data[i + 5];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
@@ -305,46 +323,49 @@ void unroll7a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-6;
+    long limit = length - 6;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 7 elements at a time */
-    for (i = 0; i < limit; i+=7) {
-	acc = acc OP data[i] OP data[i+1];
-	acc = acc OP data[i+2] OP data[i+3];
-	acc = acc OP data[i+4] OP data[i+5];
-	acc = acc OP data[i+6];
+    for (i = 0; i < limit; i += 7)
+    {
+        acc = acc OP data[i] OP data[i + 1];
+        acc = acc OP data[i + 2] OP data[i + 3];
+        acc = acc OP data[i + 4] OP data[i + 5];
+        acc = acc OP data[i + 6];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
-
 
 char unroll8a_descr[] = "unroll8a: Array code, unrolled by 8";
 void unroll8a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-7;
+    long limit = length - 7;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 8 elements at a time */
-    for (i = 0; i < limit; i+=8) {
-	acc = acc OP data[i] OP data[i+1];
-	acc = acc OP data[i+2] OP data[i+3];
-	acc = acc OP data[i+4] OP data[i+5];
-	acc = acc OP data[i+6] OP data[i+7];
+    for (i = 0; i < limit; i += 8)
+    {
+        acc = acc OP data[i] OP data[i + 1];
+        acc = acc OP data[i + 2] OP data[i + 3];
+        acc = acc OP data[i + 4] OP data[i + 5];
+        acc = acc OP data[i + 6] OP data[i + 7];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
@@ -354,22 +375,24 @@ void unroll9a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-8;
+    long limit = length - 8;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 9 elements at a time */
-    for (i = 0; i < limit; i+=9) {
-	acc = acc OP data[i] OP data[i+1];
-	acc = acc OP data[i+2] OP data[i+3];
-	acc = acc OP data[i+4] OP data[i+5];
-	acc = acc OP data[i+6] OP data[i+7];
-	acc = acc OP data[i+8];
+    for (i = 0; i < limit; i += 9)
+    {
+        acc = acc OP data[i] OP data[i + 1];
+        acc = acc OP data[i + 2] OP data[i + 3];
+        acc = acc OP data[i + 4] OP data[i + 5];
+        acc = acc OP data[i + 6] OP data[i + 7];
+        acc = acc OP data[i + 8];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
@@ -379,51 +402,54 @@ void unroll10a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-9;
+    long limit = length - 9;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 10 elements at a time */
-    for (i = 0; i < limit; i+=10) {
-	acc = acc OP data[i] OP data[i+1];
-	acc = acc OP data[i+2] OP data[i+3];
-	acc = acc OP data[i+4] OP data[i+5];
-	acc = acc OP data[i+6] OP data[i+7];
-	acc = acc OP data[i+8] OP data[i+9];
+    for (i = 0; i < limit; i += 10)
+    {
+        acc = acc OP data[i] OP data[i + 1];
+        acc = acc OP data[i + 2] OP data[i + 3];
+        acc = acc OP data[i + 4] OP data[i + 5];
+        acc = acc OP data[i + 6] OP data[i + 7];
+        acc = acc OP data[i + 8] OP data[i + 9];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
-
 
 char unroll16a_descr[] = "unroll16a: Array code, unrolled by 16";
 void unroll16a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-15;
+    long limit = length - 15;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 16 elements at a time */
-    for (i = 0; i < limit; i+=16) {
-	acc = acc OP data[i] OP data[i+1];
-	acc = acc OP data[i+2] OP data[i+3];
-	acc = acc OP data[i+4] OP data[i+5];
-	acc = acc OP data[i+6] OP data[i+7];
-	acc = acc OP data[i+8] OP data[i+9];
-	acc = acc OP data[i+10] OP data[i+11];
-	acc = acc OP data[i+12] OP data[i+13];
-	acc = acc OP data[i+14] OP data[i+15];
+    for (i = 0; i < limit; i += 16)
+    {
+        acc = acc OP data[i] OP data[i + 1];
+        acc = acc OP data[i + 2] OP data[i + 3];
+        acc = acc OP data[i + 4] OP data[i + 5];
+        acc = acc OP data[i + 6] OP data[i + 7];
+        acc = acc OP data[i + 8] OP data[i + 9];
+        acc = acc OP data[i + 10] OP data[i + 11];
+        acc = acc OP data[i + 12] OP data[i + 13];
+        acc = acc OP data[i + 14] OP data[i + 15];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
@@ -433,66 +459,70 @@ void unroll2_combine(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    int over = length%2;
-    data_t *dend = data+length-over;
+    int over = length % 2;
+    data_t *dend = data + length - over;
     data_t acc = IDENT;
 
-    while (data < dend) {
-	acc = acc OP data[0];
-	acc = acc OP data[1];
-	data += 2;
+    while (data < dend)
+    {
+        acc = acc OP data[0];
+        acc = acc OP data[1];
+        data += 2;
     }
     dend += over;
-    while (data < dend) {
-	acc = acc OP *data;
-	data ++;
+    while (data < dend)
+    {
+        acc = acc OP * data;
+        data++;
     }
     *dest = acc;
 }
-
 
 char unroll3_descr[] = "unroll3: Pointer code, unrolled by 3";
 void unroll3_combine(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    data_t *dend = data+length-2;
+    data_t *dend = data + length - 2;
     data_t acc = IDENT;
 
-    while (data < dend) {
-	acc = acc OP data[0];
-	acc = acc OP data[1];
-	acc = acc OP data[2];
-	data += 3;
+    while (data < dend)
+    {
+        acc = acc OP data[0];
+        acc = acc OP data[1];
+        acc = acc OP data[2];
+        data += 3;
     }
     dend += 2;
-    while (data < dend) {
-	acc = acc OP *data;
-	data ++;
+    while (data < dend)
+    {
+        acc = acc OP * data;
+        data++;
     }
     *dest = acc;
 }
-
 
 char unroll4_descr[] = "unroll4: Pointer code, unrolled by 4";
 void unroll4_combine(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    data_t *dend = data+length-3;
+    data_t *dend = data + length - 3;
     data_t acc = IDENT;
 
-    while (data < dend) {
-	acc = acc OP data[0];
-	acc = acc OP data[1];
-	acc = acc OP data[2];
-	acc = acc OP data[3];
-	data += 4;
+    while (data < dend)
+    {
+        acc = acc OP data[0];
+        acc = acc OP data[1];
+        acc = acc OP data[2];
+        acc = acc OP data[3];
+        data += 4;
     }
     dend += 3;
-    while (data < dend) {
-	acc = acc OP *data;
-	data ++;
+    while (data < dend)
+    {
+        acc = acc OP * data;
+        data++;
     }
     *dest = acc;
 }
@@ -502,25 +532,27 @@ void unroll8_combine(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    int over = length%8;
-    data_t *dend = data+length-over;
+    int over = length % 8;
+    data_t *dend = data + length - over;
     data_t acc = IDENT;
 
-    while (data < dend) {
-	acc = acc OP data[0];
-	acc = acc OP data[1];
-	acc = acc OP data[2];
-	acc = acc OP data[3];
-	acc = acc OP data[4];
-	acc = acc OP data[5];
-	acc = acc OP data[6];
-	acc = acc OP data[7];
-	data += 8;
+    while (data < dend)
+    {
+        acc = acc OP data[0];
+        acc = acc OP data[1];
+        acc = acc OP data[2];
+        acc = acc OP data[3];
+        acc = acc OP data[4];
+        acc = acc OP data[5];
+        acc = acc OP data[6];
+        acc = acc OP data[7];
+        data += 8;
     }
     dend += over;
-    while (data < dend) {
-	acc = acc OP *data;
-	data ++;
+    while (data < dend)
+    {
+        acc = acc OP * data;
+        data++;
     }
     *dest = acc;
 }
@@ -530,37 +562,38 @@ void unroll16_combine(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    int over = length%16;
-    data_t *dend = data+length-over;
+    int over = length % 16;
+    data_t *dend = data + length - over;
     data_t acc = IDENT;
 
-    while (data < dend) {
-	acc = acc OP data[0];
-	acc = acc OP data[1];
-	acc = acc OP data[2];
-	acc = acc OP data[3];
-	acc = acc OP data[4];
-	acc = acc OP data[5];
-	acc = acc OP data[6];
-	acc = acc OP data[7];
-	acc = acc OP data[8];
-	acc = acc OP data[9];
-	acc = acc OP data[10];
-	acc = acc OP data[11];
-	acc = acc OP data[12];
-	acc = acc OP data[13];
-	acc = acc OP data[14];
-	acc = acc OP data[15];
-	data += 16;
+    while (data < dend)
+    {
+        acc = acc OP data[0];
+        acc = acc OP data[1];
+        acc = acc OP data[2];
+        acc = acc OP data[3];
+        acc = acc OP data[4];
+        acc = acc OP data[5];
+        acc = acc OP data[6];
+        acc = acc OP data[7];
+        acc = acc OP data[8];
+        acc = acc OP data[9];
+        acc = acc OP data[10];
+        acc = acc OP data[11];
+        acc = acc OP data[12];
+        acc = acc OP data[13];
+        acc = acc OP data[14];
+        acc = acc OP data[15];
+        data += 16;
     }
     dend += over;
-    while (data < dend) {
-	acc = acc OP *data;
-	data ++;
+    while (data < dend)
+    {
+        acc = acc OP * data;
+        data++;
     }
     *dest = acc;
 }
-
 
 char combine6_descr[] = "combine6: Array code, unrolled by 2, Superscalar x2";
 /* $begin combine6 */
@@ -569,105 +602,122 @@ void combine6(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-1;
+    long limit = length - 1;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
 
     /* Combine 2 elements at a time */
-    for (i = 0; i < limit; i+=2) {
-	acc0 = acc0 OP data[i]; 
-	acc1 = acc1 OP data[i+1];
+    for (i = 0; i < limit; i += 2)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
     *dest = acc0 OP acc1;
 }
 /* $end combine6 */
 
-char unroll4x2a_descr[] = "unroll4x2a: Array code, unrolled by 4, Superscalar x2";
+char unroll4x2a_descr[] =
+    "unroll4x2a: Array code, unrolled by 4, Superscalar x2";
 void unroll4x2a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-3;
+    long limit = length - 3;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
 
     /* Combine 4 elements at a time */
-    for (i = 0; i < limit; i+=4) {
-	acc0 = acc0 OP data[i]; acc1 = acc1 OP data[i+1];
-	acc0 = acc0 OP data[i+2]; acc1 = acc1 OP data[i+3];
+    for (i = 0; i < limit; i += 4)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc0 = acc0 OP data[i + 2];
+        acc1 = acc1 OP data[i + 3];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
     *dest = acc0 OP acc1;
 }
 
-
-char unroll8x2a_descr[] = "unroll8x2a: Array code, unrolled by 8, Superscalar x2";
+char unroll8x2a_descr[] =
+    "unroll8x2a: Array code, unrolled by 8, Superscalar x2";
 void unroll8x2a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-7;
+    long limit = length - 7;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
 
     /* Combine 8 elements at a time */
-    for (i = 0; i < limit; i+=8) {
-	acc0 = acc0 OP data[i]; acc1 = acc1 OP data[i+1];
-	acc0 = acc0 OP data[i+2]; acc1 = acc1 OP data[i+3];
-	acc0 = acc0 OP data[i+4]; acc1 = acc1 OP data[i+5];
-	acc0 = acc0 OP data[i+6]; acc1 = acc1 OP data[i+7];
+    for (i = 0; i < limit; i += 8)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc0 = acc0 OP data[i + 2];
+        acc1 = acc1 OP data[i + 3];
+        acc0 = acc0 OP data[i + 4];
+        acc1 = acc1 OP data[i + 5];
+        acc0 = acc0 OP data[i + 6];
+        acc1 = acc1 OP data[i + 7];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
     *dest = acc0 OP acc1;
 }
 
-char unroll3x3a_descr[] = "unroll3x3a: Array code, unrolled by 3, Superscalar x3";
+char unroll3x3a_descr[] =
+    "unroll3x3a: Array code, unrolled by 3, Superscalar x3";
 void unroll3x3a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-2;
+    long limit = length - 2;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
     data_t acc2 = IDENT;
 
     /* Combine 4 elements at a time */
-    for (i = 0; i < limit; i+=3) {
-	acc0 = acc0 OP data[i]; acc1 = acc1 OP data[i+1];
-	acc2 = acc2 OP data[i+2];
+    for (i = 0; i < limit; i += 3)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc2 = acc2 OP data[i + 2];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
     *dest = acc0 OP acc1 OP acc2;
 }
 
-
-char unroll4x4a_descr[] = "unroll4x4a: Array code, unrolled by 4, Superscalar x4";
+char unroll4x4a_descr[] =
+    "unroll4x4a: Array code, unrolled by 4, Superscalar x4";
 void unroll4x4a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-3;
+    long limit = length - 3;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -675,25 +725,29 @@ void unroll4x4a_combine(vec_ptr v, data_t *dest)
     data_t acc3 = IDENT;
 
     /* Combine 4 elements at a time */
-    for (i = 0; i < limit; i+=4) {
-	acc0 = acc0 OP data[i]; acc1 = acc1 OP data[i+1];
-	acc2 = acc2 OP data[i+2]; acc3 = acc3 OP data[i+3];
+    for (i = 0; i < limit; i += 4)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc2 = acc2 OP data[i + 2];
+        acc3 = acc3 OP data[i + 3];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = (acc0 OP acc1) OP (acc2 OP acc3);
-
+    *dest = (acc0 OP acc1)OP(acc2 OP acc3);
 }
 
-char unroll8x4a_descr[] = "unroll8x4a: Array code, unrolled by 8, Superscalar x4";
+char unroll8x4a_descr[] =
+    "unroll8x4a: Array code, unrolled by 8, Superscalar x4";
 void unroll8x4a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-7;
+    long limit = length - 7;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -701,26 +755,33 @@ void unroll8x4a_combine(vec_ptr v, data_t *dest)
     data_t acc3 = IDENT;
 
     /* Combine 8 elements at a time */
-    for (i = 0; i < limit; i+=8) {
-	acc0 = acc0 OP data[i];   acc1 = acc1 OP data[i+1];
-	acc2 = acc2 OP data[i+2]; acc3 = acc3 OP data[i+3];
-	acc0 = acc0 OP data[i+4]; acc1 = acc1 OP data[i+5];
-	acc2 = acc2 OP data[i+6]; acc3 = acc3 OP data[i+7];
+    for (i = 0; i < limit; i += 8)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc2 = acc2 OP data[i + 2];
+        acc3 = acc3 OP data[i + 3];
+        acc0 = acc0 OP data[i + 4];
+        acc1 = acc1 OP data[i + 5];
+        acc2 = acc2 OP data[i + 6];
+        acc3 = acc3 OP data[i + 7];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
     *dest = acc0 OP acc1 OP acc2 OP acc3;
 }
 
-char unroll12x6a_descr[] = "unroll2x6a: Array code, unrolled by 12, Superscalar x6";
+char unroll12x6a_descr[] =
+    "unroll2x6a: Array code, unrolled by 12, Superscalar x6";
 void unroll12x6a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-11;
+    long limit = length - 11;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -730,34 +791,37 @@ void unroll12x6a_combine(vec_ptr v, data_t *dest)
     data_t acc5 = IDENT;
 
     /* Combine 12 elements at a time */
-    for (i = 0; i < limit; i+=12) {
-	acc0 = acc0 OP data[i];
-	acc0 = acc0 OP data[i+6]; 
-	acc1 = acc1 OP data[i+1];
-	acc1 = acc1 OP data[i+7];
-	acc2 = acc2 OP data[i+2];
-	acc2 = acc2 OP data[i+8]; 
-	acc3 = acc3 OP data[i+3];
-	acc3 = acc3 OP data[i+9];
-	acc4 = acc4 OP data[i+4]; 
-	acc4 = acc4 OP data[i+10]; 
-	acc5 = acc5 OP data[i+5];
-	acc5 = acc5 OP data[i+11];
+    for (i = 0; i < limit; i += 12)
+    {
+        acc0 = acc0 OP data[i];
+        acc0 = acc0 OP data[i + 6];
+        acc1 = acc1 OP data[i + 1];
+        acc1 = acc1 OP data[i + 7];
+        acc2 = acc2 OP data[i + 2];
+        acc2 = acc2 OP data[i + 8];
+        acc3 = acc3 OP data[i + 3];
+        acc3 = acc3 OP data[i + 9];
+        acc4 = acc4 OP data[i + 4];
+        acc4 = acc4 OP data[i + 10];
+        acc5 = acc5 OP data[i + 5];
+        acc5 = acc5 OP data[i + 11];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = (acc0 OP acc1) OP (acc2 OP acc3) OP (acc4 OP acc5);
+    *dest = (acc0 OP acc1)OP(acc2 OP acc3) OP(acc4 OP acc5);
 }
 
-char unroll12x12a_descr[] = "unroll12x12a: Array code, unrolled by 12, Superscalar x12";
+char unroll12x12a_descr[] =
+    "unroll12x12a: Array code, unrolled by 12, Superscalar x12";
 void unroll12x12a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-11;
+    long limit = length - 11;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -770,38 +834,41 @@ void unroll12x12a_combine(vec_ptr v, data_t *dest)
     data_t acc8 = IDENT;
     data_t acc9 = IDENT;
     data_t acc10 = IDENT;
-    data_t acc11= IDENT;
+    data_t acc11 = IDENT;
 
     /* Combine 12 elements at a time */
-    for (i = 0; i < limit; i+=12) {
-	acc0 = acc0 OP data[i];
-	acc6 = acc6 OP data[i+6]; 
-	acc1 = acc1 OP data[i+1];
-	acc7 = acc7 OP data[i+7];
-	acc2 = acc2 OP data[i+2];
-	acc8 = acc8 OP data[i+8]; 
-	acc3 = acc3 OP data[i+3];
-	acc9 = acc9 OP data[i+9];
-	acc4 = acc4 OP data[i+4]; 
-	acc10 = acc10 OP data[i+10]; 
-	acc5 = acc5 OP data[i+5];
-	acc11 = acc11 OP data[i+11];
+    for (i = 0; i < limit; i += 12)
+    {
+        acc0 = acc0 OP data[i];
+        acc6 = acc6 OP data[i + 6];
+        acc1 = acc1 OP data[i + 1];
+        acc7 = acc7 OP data[i + 7];
+        acc2 = acc2 OP data[i + 2];
+        acc8 = acc8 OP data[i + 8];
+        acc3 = acc3 OP data[i + 3];
+        acc9 = acc9 OP data[i + 9];
+        acc4 = acc4 OP data[i + 4];
+        acc10 = acc10 OP data[i + 10];
+        acc5 = acc5 OP data[i + 5];
+        acc11 = acc11 OP data[i + 11];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = (acc0 OP acc1) OP (acc2 OP acc3) OP (acc4 OP acc5)
-	OP (acc6 OP acc7) OP (acc8 OP acc9) OP (acc10 OP acc11);
+    *dest = (acc0 OP acc1)OP(acc2 OP acc3) OP(acc4 OP acc5) OP(acc6 OP acc7)
+        OP(acc8 OP acc9) OP(acc10 OP acc11);
 }
 
-char unroll16x16a_descr[] = "unroll16x16a: Array code, unrolled by 16, Superscalar x16";
+char unroll16x16a_descr[] =
+    "unroll16x16a: Array code, unrolled by 16, Superscalar x16";
 void unroll16x16a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-15;
+    long limit = length - 15;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -814,47 +881,50 @@ void unroll16x16a_combine(vec_ptr v, data_t *dest)
     data_t acc8 = IDENT;
     data_t acc9 = IDENT;
     data_t acc10 = IDENT;
-    data_t acc11= IDENT;
-    data_t acc12= IDENT;
-    data_t acc13= IDENT;
-    data_t acc14= IDENT;
-    data_t acc15= IDENT;
+    data_t acc11 = IDENT;
+    data_t acc12 = IDENT;
+    data_t acc13 = IDENT;
+    data_t acc14 = IDENT;
+    data_t acc15 = IDENT;
 
     /* Combine 16 elements at a time */
-    for (i = 0; i < limit; i+=16) {
-	acc0 = acc0 OP data[i];
-	acc6 = acc6 OP data[i+6]; 
-	acc1 = acc1 OP data[i+1];
-	acc7 = acc7 OP data[i+7];
-	acc2 = acc2 OP data[i+2];
-	acc8 = acc8 OP data[i+8]; 
-	acc3 = acc3 OP data[i+3];
-	acc9 = acc9 OP data[i+9];
-	acc4 = acc4 OP data[i+4]; 
-	acc10 = acc10 OP data[i+10]; 
-	acc5 = acc5 OP data[i+5];
-	acc11 = acc11 OP data[i+11];
-	acc12 = acc12 OP data[i+12];
-	acc13 = acc13 OP data[i+13];
-	acc14 = acc14 OP data[i+14];
-	acc15 = acc15 OP data[i+15];
+    for (i = 0; i < limit; i += 16)
+    {
+        acc0 = acc0 OP data[i];
+        acc6 = acc6 OP data[i + 6];
+        acc1 = acc1 OP data[i + 1];
+        acc7 = acc7 OP data[i + 7];
+        acc2 = acc2 OP data[i + 2];
+        acc8 = acc8 OP data[i + 8];
+        acc3 = acc3 OP data[i + 3];
+        acc9 = acc9 OP data[i + 9];
+        acc4 = acc4 OP data[i + 4];
+        acc10 = acc10 OP data[i + 10];
+        acc5 = acc5 OP data[i + 5];
+        acc11 = acc11 OP data[i + 11];
+        acc12 = acc12 OP data[i + 12];
+        acc13 = acc13 OP data[i + 13];
+        acc14 = acc14 OP data[i + 14];
+        acc15 = acc15 OP data[i + 15];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = ((acc0 OP acc1) OP (acc2 OP acc3) OP (acc4 OP acc5))
-	OP ((acc6 OP acc7) OP (acc8 OP acc9) OP (acc10 OP acc11))
-	OP ((acc12 OP acc13) OP (acc14 OP acc15));
+    *dest = ((acc0 OP acc1)OP(acc2 OP acc3) OP(acc4 OP acc5))OP(
+        (acc6 OP acc7)OP(acc8 OP acc9) OP(acc10 OP acc11))
+        OP((acc12 OP acc13)OP(acc14 OP acc15));
 }
 
-char unroll20x20a_descr[] = "unroll20x20a: Array code, unrolled by 20, Superscalar x20";
+char unroll20x20a_descr[] =
+    "unroll20x20a: Array code, unrolled by 20, Superscalar x20";
 void unroll20x20a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-19;
+    long limit = length - 19;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -867,58 +937,59 @@ void unroll20x20a_combine(vec_ptr v, data_t *dest)
     data_t acc8 = IDENT;
     data_t acc9 = IDENT;
     data_t acc10 = IDENT;
-    data_t acc11= IDENT;
-    data_t acc12= IDENT;
-    data_t acc13= IDENT;
-    data_t acc14= IDENT;
-    data_t acc15= IDENT;
-    data_t acc16= IDENT;
-    data_t acc17= IDENT;
-    data_t acc18= IDENT;
-    data_t acc19= IDENT;
+    data_t acc11 = IDENT;
+    data_t acc12 = IDENT;
+    data_t acc13 = IDENT;
+    data_t acc14 = IDENT;
+    data_t acc15 = IDENT;
+    data_t acc16 = IDENT;
+    data_t acc17 = IDENT;
+    data_t acc18 = IDENT;
+    data_t acc19 = IDENT;
 
     /* Combine 20 elements at a time */
-    for (i = 0; i < limit; i+=20) {
-	acc0 = acc0 OP data[i];
-	acc6 = acc6 OP data[i+6]; 
-	acc1 = acc1 OP data[i+1];
-	acc7 = acc7 OP data[i+7];
-	acc2 = acc2 OP data[i+2];
-	acc8 = acc8 OP data[i+8]; 
-	acc3 = acc3 OP data[i+3];
-	acc9 = acc9 OP data[i+9];
-	acc4 = acc4 OP data[i+4]; 
-	acc10 = acc10 OP data[i+10]; 
-	acc5 = acc5 OP data[i+5];
-	acc11 = acc11 OP data[i+11];
-	acc12 = acc12 OP data[i+12];
-	acc13 = acc13 OP data[i+13];
-	acc14 = acc14 OP data[i+14];
-	acc15 = acc15 OP data[i+15];
-	acc16 = acc16 OP data[i+16];
-	acc17 = acc17 OP data[i+17];
-	acc18 = acc18 OP data[i+18];
-	acc19 = acc19 OP data[i+19];
+    for (i = 0; i < limit; i += 20)
+    {
+        acc0 = acc0 OP data[i];
+        acc6 = acc6 OP data[i + 6];
+        acc1 = acc1 OP data[i + 1];
+        acc7 = acc7 OP data[i + 7];
+        acc2 = acc2 OP data[i + 2];
+        acc8 = acc8 OP data[i + 8];
+        acc3 = acc3 OP data[i + 3];
+        acc9 = acc9 OP data[i + 9];
+        acc4 = acc4 OP data[i + 4];
+        acc10 = acc10 OP data[i + 10];
+        acc5 = acc5 OP data[i + 5];
+        acc11 = acc11 OP data[i + 11];
+        acc12 = acc12 OP data[i + 12];
+        acc13 = acc13 OP data[i + 13];
+        acc14 = acc14 OP data[i + 14];
+        acc15 = acc15 OP data[i + 15];
+        acc16 = acc16 OP data[i + 16];
+        acc17 = acc17 OP data[i + 17];
+        acc18 = acc18 OP data[i + 18];
+        acc19 = acc19 OP data[i + 19];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest =
-	(((acc0 OP acc1) OP (acc2 OP acc3) OP (acc4 OP acc5))
-	 OP ((acc6 OP acc7) OP (acc8 OP acc9) OP (acc10 OP acc11)))
-	OP
-	(((acc12 OP acc13) OP (acc14 OP acc15)) OP ((acc16 OP acc17) OP (acc18 OP acc19)));
+    *dest = (((acc0 OP acc1)OP(acc2 OP acc3) OP(acc4 OP acc5))OP(
+        (acc6 OP acc7)OP(acc8 OP acc9)
+            OP(acc10 OP acc11)))OP(((acc12 OP acc13)OP(acc14 OP acc15))
+                                       OP((acc16 OP acc17)OP(acc18 OP acc19)));
 }
 
-
-char unroll5x5a_descr[] = "unroll5x5a: Array code, unrolled by 5, Superscalar x5";
+char unroll5x5a_descr[] =
+    "unroll5x5a: Array code, unrolled by 5, Superscalar x5";
 void unroll5x5a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-4;
+    long limit = length - 4;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -927,25 +998,30 @@ void unroll5x5a_combine(vec_ptr v, data_t *dest)
     data_t acc4 = IDENT;
 
     /* Combine 5 elements at a time */
-    for (i = 0; i < limit; i+=5) {
-	acc0 = acc0 OP data[i];   acc1 = acc1 OP data[i+1];
-	acc2 = acc2 OP data[i+2]; acc3 = acc3 OP data[i+3];
-	acc4 = acc4 OP data[i+4];
+    for (i = 0; i < limit; i += 5)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc2 = acc2 OP data[i + 2];
+        acc3 = acc3 OP data[i + 3];
+        acc4 = acc4 OP data[i + 4];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = (acc0 OP acc1) OP (acc2 OP acc3 OP acc4);
+    *dest = (acc0 OP acc1)OP(acc2 OP acc3 OP acc4);
 }
 
-char unroll6x6a_descr[] = "unroll6x6a: Array code, unrolled by 6, Superscalar x6";
+char unroll6x6a_descr[] =
+    "unroll6x6a: Array code, unrolled by 6, Superscalar x6";
 void unroll6x6a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-5;
+    long limit = length - 5;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -955,25 +1031,31 @@ void unroll6x6a_combine(vec_ptr v, data_t *dest)
     data_t acc5 = IDENT;
 
     /* Combine 6 elements at a time */
-    for (i = 0; i < limit; i+=6) {
-	acc0 = acc0 OP data[i];   acc1 = acc1 OP data[i+1];
-	acc2 = acc2 OP data[i+2]; acc3 = acc3 OP data[i+3];
-	acc4 = acc4 OP data[i+4]; acc5 = acc5 OP data[i+5];
+    for (i = 0; i < limit; i += 6)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc2 = acc2 OP data[i + 2];
+        acc3 = acc3 OP data[i + 3];
+        acc4 = acc4 OP data[i + 4];
+        acc5 = acc5 OP data[i + 5];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = (acc0 OP acc1) OP (acc2 OP acc3) OP (acc4 OP acc5);
+    *dest = (acc0 OP acc1)OP(acc2 OP acc3) OP(acc4 OP acc5);
 }
 
-char unroll7x7a_descr[] = "unroll7x7a: Array code, unrolled by 7, Superscalar x7";
+char unroll7x7a_descr[] =
+    "unroll7x7a: Array code, unrolled by 7, Superscalar x7";
 void unroll7x7a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-6;
+    long limit = length - 6;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -984,26 +1066,32 @@ void unroll7x7a_combine(vec_ptr v, data_t *dest)
     data_t acc6 = IDENT;
 
     /* Combine 7 elements at a time */
-    for (i = 0; i < limit; i+=7) {
-	acc0 = acc0 OP data[i];   acc1 = acc1 OP data[i+1];
-	acc2 = acc2 OP data[i+2]; acc3 = acc3 OP data[i+3];
-	acc4 = acc4 OP data[i+4]; acc5 = acc5 OP data[i+5];
-	acc6 = acc6 OP data[i+6];
+    for (i = 0; i < limit; i += 7)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc2 = acc2 OP data[i + 2];
+        acc3 = acc3 OP data[i + 3];
+        acc4 = acc4 OP data[i + 4];
+        acc5 = acc5 OP data[i + 5];
+        acc6 = acc6 OP data[i + 6];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = ((acc0 OP acc1) OP (acc2 OP acc3)) OP (acc4 OP acc5 OP acc6);
+    *dest = ((acc0 OP acc1)OP(acc2 OP acc3))OP(acc4 OP acc5 OP acc6);
 }
 
-char unroll8x8a_descr[] = "unroll8x8a: Array code, unrolled by 8, Superscalar x8";
+char unroll8x8a_descr[] =
+    "unroll8x8a: Array code, unrolled by 8, Superscalar x8";
 void unroll8x8a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-7;
+    long limit = length - 7;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -1015,26 +1103,33 @@ void unroll8x8a_combine(vec_ptr v, data_t *dest)
     data_t acc7 = IDENT;
 
     /* Combine 8 elements at a time */
-    for (i = 0; i < limit; i+=8) {
-	acc0 = acc0 OP data[i];   acc1 = acc1 OP data[i+1];
-	acc2 = acc2 OP data[i+2]; acc3 = acc3 OP data[i+3];
-	acc4 = acc4 OP data[i+4]; acc5 = acc5 OP data[i+5];
-	acc6 = acc6 OP data[i+6]; acc7 = acc7 OP data[i+7];
+    for (i = 0; i < limit; i += 8)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc2 = acc2 OP data[i + 2];
+        acc3 = acc3 OP data[i + 3];
+        acc4 = acc4 OP data[i + 4];
+        acc5 = acc5 OP data[i + 5];
+        acc6 = acc6 OP data[i + 6];
+        acc7 = acc7 OP data[i + 7];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = ((acc0 OP acc1) OP (acc2 OP acc3)) OP ((acc4 OP acc5) OP (acc6 OP acc7));
+    *dest = ((acc0 OP acc1)OP(acc2 OP acc3))OP((acc4 OP acc5)OP(acc6 OP acc7));
 }
 
-char unroll9x9a_descr[] = "unroll9x9a: Array code, unrolled by 9, Superscalar x9";
+char unroll9x9a_descr[] =
+    "unroll9x9a: Array code, unrolled by 9, Superscalar x9";
 void unroll9x9a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-8;
+    long limit = length - 8;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -1047,27 +1142,35 @@ void unroll9x9a_combine(vec_ptr v, data_t *dest)
     data_t acc8 = IDENT;
 
     /* Combine 9 elements at a time */
-    for (i = 0; i < limit; i+=9) {
-	acc0 = acc0 OP data[i];   acc1 = acc1 OP data[i+1];
-	acc2 = acc2 OP data[i+2]; acc3 = acc3 OP data[i+3];
-	acc4 = acc4 OP data[i+4]; acc5 = acc5 OP data[i+5];
-	acc6 = acc6 OP data[i+6]; acc7 = acc7 OP data[i+7];
-	acc8 = acc8 OP data[i+8];
+    for (i = 0; i < limit; i += 9)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc2 = acc2 OP data[i + 2];
+        acc3 = acc3 OP data[i + 3];
+        acc4 = acc4 OP data[i + 4];
+        acc5 = acc5 OP data[i + 5];
+        acc6 = acc6 OP data[i + 6];
+        acc7 = acc7 OP data[i + 7];
+        acc8 = acc8 OP data[i + 8];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = ((acc0 OP acc1) OP (acc2 OP acc3)) OP ((acc4 OP acc5) OP (acc6 OP acc7) OP acc8);
+    *dest = ((acc0 OP acc1)OP(acc2 OP acc3))OP((acc4 OP acc5)OP(acc6 OP acc7)
+                                                   OP acc8);
 }
 
-char unroll10x10a_descr[] = "unroll10x10a: Array code, unrolled by 10, Superscalar x10";
+char unroll10x10a_descr[] =
+    "unroll10x10a: Array code, unrolled by 10, Superscalar x10";
 void unroll10x10a_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-9;
+    long limit = length - 9;
     data_t *data = get_vec_start(v);
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
@@ -1081,166 +1184,187 @@ void unroll10x10a_combine(vec_ptr v, data_t *dest)
     data_t acc9 = IDENT;
 
     /* Combine 10 elements at a time */
-    for (i = 0; i < limit; i+=10) {
-	acc0 = acc0 OP data[i];   acc1 = acc1 OP data[i+1];
-	acc2 = acc2 OP data[i+2]; acc3 = acc3 OP data[i+3];
-	acc4 = acc4 OP data[i+4]; acc5 = acc5 OP data[i+5];
-	acc6 = acc6 OP data[i+6]; acc7 = acc7 OP data[i+7];
-	acc8 = acc8 OP data[i+8]; acc9 = acc9 OP data[i+9];
+    for (i = 0; i < limit; i += 10)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data[i + 1];
+        acc2 = acc2 OP data[i + 2];
+        acc3 = acc3 OP data[i + 3];
+        acc4 = acc4 OP data[i + 4];
+        acc5 = acc5 OP data[i + 5];
+        acc6 = acc6 OP data[i + 6];
+        acc7 = acc7 OP data[i + 7];
+        acc8 = acc8 OP data[i + 8];
+        acc9 = acc9 OP data[i + 9];
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc0 = acc0 OP data[i];
+    for (; i < length; i++)
+    {
+        acc0 = acc0 OP data[i];
     }
-    *dest = ((acc0 OP acc1) OP (acc2 OP acc3)) OP
-	((acc4 OP acc5) OP (acc6 OP acc7)) OP
-	(acc8 OP acc9);
+    *dest = ((acc0 OP acc1)OP(acc2 OP acc3))OP((acc4 OP acc5)OP(acc6 OP acc7))
+        OP(acc8 OP acc9);
 }
 
-char unrollx2as_descr[] = "unrollx2as: Array code, Unroll x2, Superscalar x2, noninterleaved";
+char unrollx2as_descr[] =
+    "unrollx2as: Array code, Unroll x2, Superscalar x2, noninterleaved";
 void unrollx2as_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length/2;
+    long limit = length / 2;
     data_t *data = get_vec_start(v);
-    data_t *data2 = data+limit;
+    data_t *data2 = data + limit;
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
 
     /* Combine 2 elements at a time */
-    for (i = 0; i < limit; i++) {
-	acc0 = acc0 OP data[i]; acc1 = acc1 OP data2[i];
+    for (i = 0; i < limit; i++)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data2[i];
     }
 
     /* Finish any remaining elements */
-    for (i = limit*2; i < length; i++) {
-	acc1 = acc1 OP data[i];
+    for (i = limit * 2; i < length; i++)
+    {
+        acc1 = acc1 OP data[i];
     }
     *dest = acc0 OP acc1;
 }
 
-char unroll4x2as_descr[] = "unroll4x2as: Array code, Unroll x4, Superscalar x2, noninterleaved";
+char unroll4x2as_descr[] =
+    "unroll4x2as: Array code, Unroll x4, Superscalar x2, noninterleaved";
 void unroll4x2as_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length/2;
+    long limit = length / 2;
     data_t *data = get_vec_start(v);
-    data_t *data2 = data+limit;
+    data_t *data2 = data + limit;
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
 
     /* Combine 2 elements at a time */
-    for (i = 0; i < limit; i++) {
-	acc0 = acc0 OP data[i]; acc1 = acc1 OP data2[i];
+    for (i = 0; i < limit; i++)
+    {
+        acc0 = acc0 OP data[i];
+        acc1 = acc1 OP data2[i];
     }
 
     /* Finish any remaining elements */
-    for (i = limit*2; i < length; i++) {
-	acc1 = acc1 OP data[i];
+    for (i = limit * 2; i < length; i++)
+    {
+        acc1 = acc1 OP data[i];
     }
     *dest = acc0 OP acc1;
 }
 
-
-
-char unroll8x2_descr[] = "unroll8x2: Pointer code, unrolled by 8, Superscalar x2";
+char unroll8x2_descr[] =
+    "unroll8x2: Pointer code, unrolled by 8, Superscalar x2";
 void unroll8x2_combine(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    data_t *dend = data+length-7;
+    data_t *dend = data + length - 7;
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
 
-    while (data < dend) {
-	acc0 = acc0 OP data[0];
-	acc1 = acc1 OP data[1];
-	acc0 = acc0 OP data[2];
-	acc1 = acc1 OP data[3];
-	acc0 = acc0 OP data[4];
-	acc1 = acc1 OP data[5];
-	acc0 = acc0 OP data[6];
-	acc1 = acc1 OP data[7];
-	data += 8;
+    while (data < dend)
+    {
+        acc0 = acc0 OP data[0];
+        acc1 = acc1 OP data[1];
+        acc0 = acc0 OP data[2];
+        acc1 = acc1 OP data[3];
+        acc0 = acc0 OP data[4];
+        acc1 = acc1 OP data[5];
+        acc0 = acc0 OP data[6];
+        acc1 = acc1 OP data[7];
+        data += 8;
     }
     dend += 7;
-    while (data < dend) {
-	acc0 = acc0 OP *data;
-	data ++;
+    while (data < dend)
+    {
+        acc0 = acc0 OP * data;
+        data++;
     }
     *dest = acc0 OP acc1;
 }
 
-char unroll9x3_descr[] = "unroll9x3: Pointer code, unrolled by 9, Superscalar x3";
+char unroll9x3_descr[] =
+    "unroll9x3: Pointer code, unrolled by 9, Superscalar x3";
 void unroll9x3_combine(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    data_t *dend = data+length-8;
+    data_t *dend = data + length - 8;
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
     data_t acc2 = IDENT;
 
-    while (data < dend) {
-	acc0 = acc0 OP data[0];
-	acc1 = acc1 OP data[1];
-	acc2 = acc2 OP data[2];
-	acc0 = acc0 OP data[3];
-	acc1 = acc1 OP data[4];
-	acc2 = acc2 OP data[5];
-	acc0 = acc0 OP data[6];
-	acc1 = acc1 OP data[7];
-	acc2 = acc2 OP data[8];
-	data += 9;
+    while (data < dend)
+    {
+        acc0 = acc0 OP data[0];
+        acc1 = acc1 OP data[1];
+        acc2 = acc2 OP data[2];
+        acc0 = acc0 OP data[3];
+        acc1 = acc1 OP data[4];
+        acc2 = acc2 OP data[5];
+        acc0 = acc0 OP data[6];
+        acc1 = acc1 OP data[7];
+        acc2 = acc2 OP data[8];
+        data += 9;
     }
     dend += 8;
-    while (data < dend) {
-	acc0 = acc0 OP *data;
-	data ++;
+    while (data < dend)
+    {
+        acc0 = acc0 OP * data;
+        data++;
     }
-    *dest = acc0 OP acc1 OP acc2; 
+    *dest = acc0 OP acc1 OP acc2;
 }
 
-
-char unroll8x4_descr[] = "unroll8x4: Pointer code, unrolled by 8, Superscalar x4";
+char unroll8x4_descr[] =
+    "unroll8x4: Pointer code, unrolled by 8, Superscalar x4";
 void unroll8x4_combine(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    data_t *dend = data+length-7;
+    data_t *dend = data + length - 7;
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
     data_t acc2 = IDENT;
     data_t acc3 = IDENT;
 
-    while (data < dend) {
-	acc0 = acc0 OP data[0];
-	acc1 = acc1 OP data[1];
-	acc2 = acc2 OP data[2];
-	acc3 = acc3 OP data[3];
-	acc0 = acc0 OP data[4];
-	acc1 = acc1 OP data[5];
-	acc2 = acc2 OP data[6];
-	acc3 = acc3 OP data[7];
-	data += 8;
+    while (data < dend)
+    {
+        acc0 = acc0 OP data[0];
+        acc1 = acc1 OP data[1];
+        acc2 = acc2 OP data[2];
+        acc3 = acc3 OP data[3];
+        acc0 = acc0 OP data[4];
+        acc1 = acc1 OP data[5];
+        acc2 = acc2 OP data[6];
+        acc3 = acc3 OP data[7];
+        data += 8;
     }
     dend += 7;
-    while (data < dend) {
-	acc3 = acc3 OP *data;
-	data ++;
+    while (data < dend)
+    {
+        acc3 = acc3 OP * data;
+        data++;
     }
     *dest = acc3 OP acc0 OP acc1 OP acc2;
 }
 
-char unroll8x8_descr[] = "unroll8x8: Pointer code, unrolled by 8, Superscalar x8";
+char unroll8x8_descr[] =
+    "unroll8x8: Pointer code, unrolled by 8, Superscalar x8";
 void unroll8x8_combine(vec_ptr v, data_t *dest)
 {
     long length = vec_length(v);
     data_t *data = get_vec_start(v);
-    data_t *dend = data+length-7;
+    data_t *dend = data + length - 7;
     data_t acc0 = IDENT;
     data_t acc1 = IDENT;
     data_t acc2 = IDENT;
@@ -1250,284 +1374,315 @@ void unroll8x8_combine(vec_ptr v, data_t *dest)
     data_t acc6 = IDENT;
     data_t acc7 = IDENT;
 
-    while (data < dend) {
-	acc0 = acc0 OP data[0];
-	acc1 = acc1 OP data[1];
-	acc2 = acc2 OP data[2];
-	acc3 = acc3  OP data[3];
-	acc4 = acc4 OP data[4];
-	acc5 = acc5 OP data[5];
-	acc6 = acc6 OP data[6];
-	acc7 = acc7 OP data[7];
-	data += 8;
+    while (data < dend)
+    {
+        acc0 = acc0 OP data[0];
+        acc1 = acc1 OP data[1];
+        acc2 = acc2 OP data[2];
+        acc3 = acc3 OP data[3];
+        acc4 = acc4 OP data[4];
+        acc5 = acc5 OP data[5];
+        acc6 = acc6 OP data[6];
+        acc7 = acc7 OP data[7];
+        data += 8;
     }
     dend += 7;
-    while (data < dend) {
-	acc0 = acc0 OP *data;
-	data ++;
+    while (data < dend)
+    {
+        acc0 = acc0 OP * data;
+        data++;
     }
     *dest = acc0 OP acc1 OP acc2 OP acc3 OP acc4 OP acc5 OP acc6 OP acc7;
 }
 
-char combine7_descr[] = "combine7: Array code, unrolled by 2, different associativity";
+char combine7_descr[] =
+    "combine7: Array code, unrolled by 2, different associativity";
 /* $begin combine7 */
 /* 2 x 1a loop unrolling */
 void combine7(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-1;
+    long limit = length - 1;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 2 elements at a time */
-    for (i = 0; i < limit; i+=2) {
-      /* $begin combine7-update */
-	acc = acc OP (data[i] OP data[i+1]);
-      /* $end combine7-update */
+    for (i = 0; i < limit; i += 2)
+    {
+        /* $begin combine7-update */
+        acc = acc OP(data[i] OP data[i + 1]);
+        /* $end combine7-update */
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
 /* $end combine7 */
 
-char unroll3aa_descr[] = "unroll3aa: Array code, unrolled by 3, Different Associativity";
+char unroll3aa_descr[] =
+    "unroll3aa: Array code, unrolled by 3, Different Associativity";
 void unroll3aa_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-2;
+    long limit = length - 2;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 3 elements at a time */
-    for (i = 0; i < limit; i+=3) {
-	acc = acc OP (data[i] OP data[i+1] OP data[i+2]);
+    for (i = 0; i < limit; i += 3)
+    {
+        acc = acc OP(data[i] OP data[i + 1] OP data[i + 2]);
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
 
-char unroll4aa_descr[] = "unroll4aa: Array code, unrolled by 4, Different Associativity";
+char unroll4aa_descr[] =
+    "unroll4aa: Array code, unrolled by 4, Different Associativity";
 void unroll4aa_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-3;
+    long limit = length - 3;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 4 elements at a time */
-    for (i = 0; i < limit; i+=4) {
-	data_t t1 = data[i] OP data[i+1];
-	data_t t2 = data[i+2] OP data[i+3];
-	acc = acc OP (t1 OP t2); 
+    for (i = 0; i < limit; i += 4)
+    {
+        data_t t1 = data[i] OP data[i + 1];
+        data_t t2 = data[i + 2] OP data[i + 3];
+        acc = acc OP(t1 OP t2);
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
 
-char unroll5aa_descr[] = "unroll5aa: Array code, unrolled by 5, Different Associativity";
+char unroll5aa_descr[] =
+    "unroll5aa: Array code, unrolled by 5, Different Associativity";
 void unroll5aa_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-4;
+    long limit = length - 4;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 5 elements at a time */
-    for (i = 0; i < limit; i+=5) {
-	data_t t1 = data[i] OP data[i+1];
-	data_t t2 = data[i+2] OP data[i+3];
-	data_t t3 = data[i+4];
-	acc = acc OP (t1 OP t2 OP t3); 
+    for (i = 0; i < limit; i += 5)
+    {
+        data_t t1 = data[i] OP data[i + 1];
+        data_t t2 = data[i + 2] OP data[i + 3];
+        data_t t3 = data[i + 4];
+        acc = acc OP(t1 OP t2 OP t3);
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
 
-char unroll6aa_descr[] = "unroll6aa: Array code, unrolled by 6, Different Associativity";
+char unroll6aa_descr[] =
+    "unroll6aa: Array code, unrolled by 6, Different Associativity";
 void unroll6aa_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-5;
+    long limit = length - 5;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 6 elements at a time */
-    for (i = 0; i < limit; i+=6) {
-	data_t t1 = data[i] OP data[i+1];
-	data_t t2 = data[i+2] OP data[i+3];
-	data_t t3 = data[i+4] OP data[i+5];
-	acc = acc OP (t1 OP t2 OP t3); 
+    for (i = 0; i < limit; i += 6)
+    {
+        data_t t1 = data[i] OP data[i + 1];
+        data_t t2 = data[i + 2] OP data[i + 3];
+        data_t t3 = data[i + 4] OP data[i + 5];
+        acc = acc OP(t1 OP t2 OP t3);
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
     *dest = acc;
 }
 
-char unroll7aa_descr[] = "unroll7aa: Array code, unrolled by 7, Different Associativity";
+char unroll7aa_descr[] =
+    "unroll7aa: Array code, unrolled by 7, Different Associativity";
 void unroll7aa_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-6;
+    long limit = length - 6;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 7 elements at a time */
-    for (i = 0; i < limit; i+=7) {
-	data_t t1 = data[i] OP data[i+1];
-	data_t t2 = data[i+2] OP data[i+3];
-	data_t u1 = t1 OP t2;
-	data_t t3 = data[i+4] OP data[i+5];
-	data_t t4 = data[i+6];
-	data_t u2 = t3 OP t4;
-	acc = acc OP (u1 OP u2); 
+    for (i = 0; i < limit; i += 7)
+    {
+        data_t t1 = data[i] OP data[i + 1];
+        data_t t2 = data[i + 2] OP data[i + 3];
+        data_t u1 = t1 OP t2;
+        data_t t3 = data[i + 4] OP data[i + 5];
+        data_t t4 = data[i + 6];
+        data_t u2 = t3 OP t4;
+        acc = acc OP(u1 OP u2);
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
 
     *dest = acc;
 }
 
-char unroll8aa_descr[] = "unroll8aa: Array code, unrolled by 8, Different Associativity";
+char unroll8aa_descr[] =
+    "unroll8aa: Array code, unrolled by 8, Different Associativity";
 void unroll8aa_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-7;
+    long limit = length - 7;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 8 elements at a time */
-    for (i = 0; i < limit; i+=8) {
-	data_t t1 = data[i] OP data[i+1];
-	data_t t2 = data[i+2] OP data[i+3];
-	data_t u1 = t1 OP t2;
-	data_t t3 = data[i+4] OP data[i+5];
-	data_t t4 = data[i+6] OP data[i+7];
-	data_t u2 = t3 OP t4;
-	acc = acc OP (u1 OP u2); 
+    for (i = 0; i < limit; i += 8)
+    {
+        data_t t1 = data[i] OP data[i + 1];
+        data_t t2 = data[i + 2] OP data[i + 3];
+        data_t u1 = t1 OP t2;
+        data_t t3 = data[i + 4] OP data[i + 5];
+        data_t t4 = data[i + 6] OP data[i + 7];
+        data_t u2 = t3 OP t4;
+        acc = acc OP(u1 OP u2);
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
 
     *dest = acc;
 }
 
-char unroll9aa_descr[] = "unroll9aa: Array code, unrolled by 9, Different Associativity";
+char unroll9aa_descr[] =
+    "unroll9aa: Array code, unrolled by 9, Different Associativity";
 void unroll9aa_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-8;
+    long limit = length - 8;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 9 elements at a time */
-    for (i = 0; i < limit; i+=9) {
-	data_t t1 = data[i] OP data[i+1];
-	data_t t2 = data[i+2] OP data[i+3];
-	data_t u1 = t1 OP t2;
-	data_t t3 = data[i+4] OP data[i+5];
-	data_t t4 = data[i+6] OP data[i+7];
-	data_t t5 = data[i+8];
-	data_t u2 = t3 OP t4 OP t5;
-	acc = acc OP (u1 OP u2); 
+    for (i = 0; i < limit; i += 9)
+    {
+        data_t t1 = data[i] OP data[i + 1];
+        data_t t2 = data[i + 2] OP data[i + 3];
+        data_t u1 = t1 OP t2;
+        data_t t3 = data[i + 4] OP data[i + 5];
+        data_t t4 = data[i + 6] OP data[i + 7];
+        data_t t5 = data[i + 8];
+        data_t u2 = t3 OP t4 OP t5;
+        acc = acc OP(u1 OP u2);
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
 
     *dest = acc;
 }
 
-char unroll10aa_descr[] = "unroll10aa: Array code, unrolled by 10, Different Associativity";
+char unroll10aa_descr[] =
+    "unroll10aa: Array code, unrolled by 10, Different Associativity";
 void unroll10aa_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-9;
+    long limit = length - 9;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 10 elements at a time */
-    for (i = 0; i < limit; i+=10) {
-	data_t t1 = data[i] OP data[i+1];
-	data_t t2 = data[i+2] OP data[i+3];
-	data_t u1 = t1 OP t2;
-	data_t t3 = data[i+4] OP data[i+5];
-	data_t t4 = data[i+6] OP data[i+7];
-	data_t t5 = data[i+8] OP data[i+9];
-	data_t u2 = t3 OP t4 OP t5;
-	acc = acc OP (u1 OP u2); 
+    for (i = 0; i < limit; i += 10)
+    {
+        data_t t1 = data[i] OP data[i + 1];
+        data_t t2 = data[i + 2] OP data[i + 3];
+        data_t u1 = t1 OP t2;
+        data_t t3 = data[i + 4] OP data[i + 5];
+        data_t t4 = data[i + 6] OP data[i + 7];
+        data_t t5 = data[i + 8] OP data[i + 9];
+        data_t u2 = t3 OP t4 OP t5;
+        acc = acc OP(u1 OP u2);
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
 
     *dest = acc;
 }
 
-
-char unroll12aa_descr[] = "unroll12aa: Array code, unrolled by 12, Different Associativity";
+char unroll12aa_descr[] =
+    "unroll12aa: Array code, unrolled by 12, Different Associativity";
 void unroll12aa_combine(vec_ptr v, data_t *dest)
 {
     long i;
     long length = vec_length(v);
-    long limit = length-11;
+    long limit = length - 11;
     data_t *data = get_vec_start(v);
     data_t acc = IDENT;
 
     /* Combine 12 elements at a time */
-    for (i = 0; i < limit; i+=12) {
-	data_t t1 = data[i] OP data[i+1];
-	data_t t2 = data[i+2] OP data[i+3];
-	data_t u1 = t1 OP t2;
-	data_t t3 = data[i+4] OP data[i+5];
-	data_t t4 = data[i+6] OP data[i+7];
-	data_t u2 = t3 OP t4;
-	data_t t5 = data[i+8] OP data[i+9];
-	data_t t6 = data[i+10] OP data[i+11];
-	data_t u3 = t5 OP t6;
-	acc = acc OP (u1 OP u2 OP u3); 
+    for (i = 0; i < limit; i += 12)
+    {
+        data_t t1 = data[i] OP data[i + 1];
+        data_t t2 = data[i + 2] OP data[i + 3];
+        data_t u1 = t1 OP t2;
+        data_t t3 = data[i + 4] OP data[i + 5];
+        data_t t4 = data[i + 6] OP data[i + 7];
+        data_t u2 = t3 OP t4;
+        data_t t5 = data[i + 8] OP data[i + 9];
+        data_t t6 = data[i + 10] OP data[i + 11];
+        data_t u3 = t5 OP t6;
+        acc = acc OP(u1 OP u2 OP u3);
     }
 
     /* Finish any remaining elements */
-    for (; i < length; i++) {
-	acc = acc OP data[i];
+    for (; i < length; i++)
+    {
+        acc = acc OP data[i];
     }
 
     *dest = acc;
@@ -1540,12 +1695,12 @@ void unroll12aa_combine(vec_ptr v, data_t *dest)
 #define VBYTES 32
 
 /* Number of elements in a vector */
-#define VSIZE VBYTES/sizeof(data_t)
+#define VSIZE VBYTES / sizeof(data_t)
 /* $end simd_vec_sizes */
 
 /* $begin simd_vec_t */
 /* Vector data type */
-typedef data_t vec_t __attribute__ ((vector_size(VBYTES)));
+typedef data_t vec_t __attribute__((vector_size(VBYTES)));
 /* $end simd_vec_t */
 
 char simd_v1_descr[] = "simd_v1: SSE code, 1*VSIZE-way parallelism";
@@ -1559,38 +1714,40 @@ void simd_v1_combine(vec_ptr v, data_t *dest)
     data_t result = IDENT;
 
     /* Initialize all accum entries to IDENT */
-    for (i = 0; i < VSIZE; i++) //line:opt:simd:initstart
-	accum[i] = IDENT;  //line:opt:simd:initend
+    for (i = 0; i < VSIZE; i++) // line:opt:simd:initstart
+        accum[i] = IDENT;       // line:opt:simd:initend
 
     /* Single step until have memory alignment */
-    while ((((size_t) data) % VBYTES) != 0 && cnt) {  //line:opt:simd:startstart
-	result = result OP *data++; 
-	cnt--;                              
-    }                              //line:opt:simd:startend
+    while ((((size_t)data) % VBYTES) != 0 && cnt)
+    { // line:opt:simd:startstart
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:startend
 
     /* Step through data with VSIZE-way parallelism */
-    while (cnt >= VSIZE) {    //line:opt:simd:loopstart
-	vec_t chunk = *((vec_t *) data);
-	accum = accum OP chunk;
-	data += VSIZE;
-	cnt -= VSIZE;       
-    } //line:opt:simd:loopend
+    while (cnt >= VSIZE)
+    { // line:opt:simd:loopstart
+        vec_t chunk = *((vec_t *)data);
+        accum = accum OP chunk;
+        data += VSIZE;
+        cnt -= VSIZE;
+    } // line:opt:simd:loopend
 
     /* Single-step through remaining elements */
-    while (cnt) { //line:opt:simd:loopfinishstart
-	result = result OP *data++;
-	cnt--;  
-    } //line:opt:simd:loopfinishend
+    while (cnt)
+    { // line:opt:simd:loopfinishstart
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:loopfinishend
 
     /* Combine elements of accumulator vector */
-    for (i = 0; i < VSIZE; i++) //line:opt:simd:accumfinishstart
-	result = result OP accum[i]; //line:opt:simd:accumfinishend
+    for (i = 0; i < VSIZE; i++)      // line:opt:simd:accumfinishstart
+        result = result OP accum[i]; // line:opt:simd:accumfinishend
 
     /* Store result */
-    *dest = result; 
+    *dest = result;
 }
 /* $end simd_combine-c */
-
 
 char simd_v2_descr[] = "simd_v2: SSE code, 2*VSIZE-way parallelism";
 void simd_v2_combine(vec_ptr v, data_t *dest)
@@ -1603,30 +1760,33 @@ void simd_v2_combine(vec_ptr v, data_t *dest)
 
     /* Initialize accum entries to IDENT */
     for (i = 0; i < VSIZE; i++)
-	accum0[i] = IDENT;
+        accum0[i] = IDENT;
     accum1 = accum0;
 
     /* Single step until have memory alignment */
-    while ((((size_t) data) % VBYTES) != 0 && cnt) {
-	result = result OP *data++; 
-	cnt--;                              
-    }                              //line:opt:simd:startend
+    while ((((size_t)data) % VBYTES) != 0 && cnt)
+    {
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:startend
 
-    while (cnt >= 2*VSIZE) {
-	vec_t chunk0 = *((vec_t *) data);
-	vec_t chunk1 = *((vec_t *) (data+VSIZE));
-	accum0 = accum0 OP chunk0;
-	accum1 = accum1 OP chunk1;
-	data += 2*VSIZE;
-	cnt -= 2*VSIZE;
+    while (cnt >= 2 * VSIZE)
+    {
+        vec_t chunk0 = *((vec_t *)data);
+        vec_t chunk1 = *((vec_t *)(data + VSIZE));
+        accum0 = accum0 OP chunk0;
+        accum1 = accum1 OP chunk1;
+        data += 2 * VSIZE;
+        cnt -= 2 * VSIZE;
     }
-    while (cnt) {
-	result = result OP *data++;
-	cnt--;
+    while (cnt)
+    {
+        result = result OP * data++;
+        cnt--;
     }
     accum0 = accum0 OP accum1;
     for (i = 0; i < VSIZE; i++)
-	result = result OP accum0[i];
+        result = result OP accum0[i];
     *dest = result;
 }
 
@@ -1641,45 +1801,48 @@ void simd_v4_combine(vec_ptr v, data_t *dest)
     /* Create 4 accumulators and initialize elements to IDENT */
     vec_t accum0, accum1, accum2, accum3;
     for (i = 0; i < VSIZE; i++)
-	accum0[i] = IDENT;
-    accum1 = accum0 ;
+        accum0[i] = IDENT;
+    accum1 = accum0;
     accum2 = accum0;
     accum3 = accum0;
-    
+
     /* Single step until have memory alignment */
-    while ((((size_t) data) % VBYTES) != 0 && cnt) {
-	result = result OP *data++; 
-	cnt--;                              
-    }                              //line:opt:simd:startend
+    while ((((size_t)data) % VBYTES) != 0 && cnt)
+    {
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:startend
 
     /* $begin simd_v4_loop-c */
     /* 4 * VSIZE x 4 * VSIZE unrolling */
-    while (cnt >= 4*VSIZE) {
-	vec_t chunk0 = *((vec_t *) data);
-	vec_t chunk1 = *((vec_t *) (data+VSIZE));
-	vec_t chunk2 = *((vec_t *) (data+2*VSIZE));
-	vec_t chunk3 = *((vec_t *) (data+3*VSIZE));
-	accum0 = accum0 OP chunk0;
-	accum1 = accum1 OP chunk1;
-	accum2 = accum2 OP chunk2;
-	accum3 = accum3 OP chunk3;
-	data += 4*VSIZE;
-	cnt -= 4*VSIZE;
+    while (cnt >= 4 * VSIZE)
+    {
+        vec_t chunk0 = *((vec_t *)data);
+        vec_t chunk1 = *((vec_t *)(data + VSIZE));
+        vec_t chunk2 = *((vec_t *)(data + 2 * VSIZE));
+        vec_t chunk3 = *((vec_t *)(data + 3 * VSIZE));
+        accum0 = accum0 OP chunk0;
+        accum1 = accum1 OP chunk1;
+        accum2 = accum2 OP chunk2;
+        accum3 = accum3 OP chunk3;
+        data += 4 * VSIZE;
+        cnt -= 4 * VSIZE;
     }
     /* $end simd_v4_loop-c */
 
-    while (cnt) {
-	result = result OP *data++;
-	cnt--;
+    while (cnt)
+    {
+        result = result OP * data++;
+        cnt--;
     }
 
     /* $begin simd_v4_accum-c */
     /* Combine into single accumulator */
-    accum0 = (accum0 OP accum1) OP (accum2 OP accum3);
+    accum0 = (accum0 OP accum1)OP(accum2 OP accum3);
 
     /* Combine results from accumulators within vector */
     for (i = 0; i < VSIZE; i++)
-	result = result OP accum0[i];
+        result = result OP accum0[i];
     /* $end simd_v4_accum-c */
     *dest = result;
 }
@@ -1695,7 +1858,7 @@ void simd_v8_combine(vec_ptr v, data_t *dest)
 
     /* Initialize accum to IDENT */
     for (i = 0; i < VSIZE; i++)
-	accum0[i] = IDENT;
+        accum0[i] = IDENT;
     accum1 = accum0;
     accum2 = accum0;
     accum3 = accum0;
@@ -1703,41 +1866,44 @@ void simd_v8_combine(vec_ptr v, data_t *dest)
     accum5 = accum0;
     accum6 = accum0;
     accum7 = accum0;
-    
-    /* Single step until have memory alignment */
-    while ((((size_t) data) % VBYTES) != 0 && cnt) {
-	result = result OP *data++; 
-	cnt--;                              
-    }                              //line:opt:simd:startend
 
-    while (cnt >= 8*VSIZE) {
-	vec_t chunk0 = *((vec_t *) data);
-	vec_t chunk1 = *((vec_t *) (data+VSIZE));
-	vec_t chunk2 = *((vec_t *) (data+2*VSIZE));
-	vec_t chunk3 = *((vec_t *) (data+3*VSIZE));
-	vec_t chunk4 = *((vec_t *) (data+4*VSIZE));
-	vec_t chunk5 = *((vec_t *) (data+5*VSIZE));
-	vec_t chunk6 = *((vec_t *) (data+6*VSIZE));
-	vec_t chunk7 = *((vec_t *) (data+7*VSIZE));
-	accum0 = accum0 OP chunk0;
-	accum1 = accum1 OP chunk1;
-	accum2 = accum2 OP chunk2;
-	accum3 = accum3 OP chunk3;
-	accum4 = accum4 OP chunk4;
-	accum5 = accum5 OP chunk5;
-	accum6 = accum6 OP chunk6;
-	accum7 = accum7 OP chunk7;
-	data += 8*VSIZE;
-	cnt -= 8*VSIZE;
+    /* Single step until have memory alignment */
+    while ((((size_t)data) % VBYTES) != 0 && cnt)
+    {
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:startend
+
+    while (cnt >= 8 * VSIZE)
+    {
+        vec_t chunk0 = *((vec_t *)data);
+        vec_t chunk1 = *((vec_t *)(data + VSIZE));
+        vec_t chunk2 = *((vec_t *)(data + 2 * VSIZE));
+        vec_t chunk3 = *((vec_t *)(data + 3 * VSIZE));
+        vec_t chunk4 = *((vec_t *)(data + 4 * VSIZE));
+        vec_t chunk5 = *((vec_t *)(data + 5 * VSIZE));
+        vec_t chunk6 = *((vec_t *)(data + 6 * VSIZE));
+        vec_t chunk7 = *((vec_t *)(data + 7 * VSIZE));
+        accum0 = accum0 OP chunk0;
+        accum1 = accum1 OP chunk1;
+        accum2 = accum2 OP chunk2;
+        accum3 = accum3 OP chunk3;
+        accum4 = accum4 OP chunk4;
+        accum5 = accum5 OP chunk5;
+        accum6 = accum6 OP chunk6;
+        accum7 = accum7 OP chunk7;
+        data += 8 * VSIZE;
+        cnt -= 8 * VSIZE;
     }
-    while (cnt) {
-	result = result OP *data++;
-	cnt--;
+    while (cnt)
+    {
+        result = result OP * data++;
+        cnt--;
     }
-    accum0 = (accum0 OP accum1) OP (accum2 OP accum3);
-    accum0 = accum0 OP (accum4 OP accum5) OP (accum6 OP accum7);
+    accum0 = (accum0 OP accum1)OP(accum2 OP accum3);
+    accum0 = accum0 OP(accum4 OP accum5) OP(accum6 OP accum7);
     for (i = 0; i < VSIZE; i++)
-	result = result OP accum0[i];
+        result = result OP accum0[i];
     *dest = result;
 }
 
@@ -1745,14 +1911,15 @@ char simd_v10_descr[] = "simd_v10: SSE code, 10*VSIZE-way parallelism";
 void simd_v10_combine(vec_ptr v, data_t *dest)
 {
     long i;
-    vec_t accum0, accum1, accum2, accum3, accum4, accum5, accum6, accum7, accum8, accum9;
+    vec_t accum0, accum1, accum2, accum3, accum4, accum5, accum6, accum7,
+        accum8, accum9;
     data_t *data = get_vec_start(v);
     int cnt = vec_length(v);
     data_t result = IDENT;
 
     /* Initialize accum to IDENT */
     for (i = 0; i < VSIZE; i++)
-	accum0[i] = IDENT;
+        accum0[i] = IDENT;
     accum1 = accum0;
     accum2 = accum0;
     accum3 = accum0;
@@ -1762,46 +1929,49 @@ void simd_v10_combine(vec_ptr v, data_t *dest)
     accum7 = accum0;
     accum8 = accum0;
     accum9 = accum0;
-    
-    /* Single step until have memory alignment */
-    while ((((size_t) data) % VBYTES) != 0 && cnt) {
-	result = result OP *data++; 
-	cnt--;                              
-    }                              //line:opt:simd:startend
 
-    while (cnt >= 10*VSIZE) {
-	vec_t chunk0 = *((vec_t *) data);
-	vec_t chunk1 = *((vec_t *) (data+VSIZE));
-	vec_t chunk2 = *((vec_t *) (data+2*VSIZE));
-	vec_t chunk3 = *((vec_t *) (data+3*VSIZE));
-	vec_t chunk4 = *((vec_t *) (data+4*VSIZE));
-	vec_t chunk5 = *((vec_t *) (data+5*VSIZE));
-	vec_t chunk6 = *((vec_t *) (data+6*VSIZE));
-	vec_t chunk7 = *((vec_t *) (data+7*VSIZE));
-	vec_t chunk8 = *((vec_t *) (data+8*VSIZE));
-	vec_t chunk9 = *((vec_t *) (data+9*VSIZE));
-	accum0 = accum0 OP chunk0;
-	accum1 = accum1 OP chunk1;
-	accum2 = accum2 OP chunk2;
-	accum3 = accum3 OP chunk3;
-	accum4 = accum4 OP chunk4;
-	accum5 = accum5 OP chunk5;
-	accum6 = accum6 OP chunk6;
-	accum7 = accum7 OP chunk7;
-	accum8 = accum8 OP chunk8;
-	accum9 = accum9 OP chunk9;
-	data += 10*VSIZE;
-	cnt -= 10*VSIZE;
+    /* Single step until have memory alignment */
+    while ((((size_t)data) % VBYTES) != 0 && cnt)
+    {
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:startend
+
+    while (cnt >= 10 * VSIZE)
+    {
+        vec_t chunk0 = *((vec_t *)data);
+        vec_t chunk1 = *((vec_t *)(data + VSIZE));
+        vec_t chunk2 = *((vec_t *)(data + 2 * VSIZE));
+        vec_t chunk3 = *((vec_t *)(data + 3 * VSIZE));
+        vec_t chunk4 = *((vec_t *)(data + 4 * VSIZE));
+        vec_t chunk5 = *((vec_t *)(data + 5 * VSIZE));
+        vec_t chunk6 = *((vec_t *)(data + 6 * VSIZE));
+        vec_t chunk7 = *((vec_t *)(data + 7 * VSIZE));
+        vec_t chunk8 = *((vec_t *)(data + 8 * VSIZE));
+        vec_t chunk9 = *((vec_t *)(data + 9 * VSIZE));
+        accum0 = accum0 OP chunk0;
+        accum1 = accum1 OP chunk1;
+        accum2 = accum2 OP chunk2;
+        accum3 = accum3 OP chunk3;
+        accum4 = accum4 OP chunk4;
+        accum5 = accum5 OP chunk5;
+        accum6 = accum6 OP chunk6;
+        accum7 = accum7 OP chunk7;
+        accum8 = accum8 OP chunk8;
+        accum9 = accum9 OP chunk9;
+        data += 10 * VSIZE;
+        cnt -= 10 * VSIZE;
     }
-    while (cnt) {
-	result = result OP *data++;
-	cnt--;
+    while (cnt)
+    {
+        result = result OP * data++;
+        cnt--;
     }
-    accum0 = (accum0 OP accum1) OP (accum2 OP accum3);
-    accum0 = accum0 OP (accum4 OP accum5) OP (accum6 OP accum7);
-    accum0 = accum0 OP (accum8 OP accum9);
+    accum0 = (accum0 OP accum1)OP(accum2 OP accum3);
+    accum0 = accum0 OP(accum4 OP accum5) OP(accum6 OP accum7);
+    accum0 = accum0 OP(accum8 OP accum9);
     for (i = 0; i < VSIZE; i++)
-	result = result OP accum0[i];
+        result = result OP accum0[i];
     *dest = result;
 }
 
@@ -1817,7 +1987,7 @@ void simd_v12_combine(vec_ptr v, data_t *dest)
 
     /* Initialize accum to IDENT */
     for (i = 0; i < VSIZE; i++)
-	accum0[i] = IDENT;
+        accum0[i] = IDENT;
     accum1 = accum0;
     accum2 = accum0;
     accum3 = accum0;
@@ -1831,53 +2001,57 @@ void simd_v12_combine(vec_ptr v, data_t *dest)
     accum11 = accum0;
 
     /* Single step until have memory alignment */
-    while ((((size_t) data) % VBYTES) != 0 && cnt) {
-	result = result OP *data++; 
-	cnt--;                              
-    }                              //line:opt:simd:startend
+    while ((((size_t)data) % VBYTES) != 0 && cnt)
+    {
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:startend
 
-    while (cnt >= 12*VSIZE) {
-	vec_t chunk0 = *((vec_t *) data);
-	vec_t chunk1 = *((vec_t *) (data+VSIZE));
-	vec_t chunk2 = *((vec_t *) (data+2*VSIZE));
-	vec_t chunk3 = *((vec_t *) (data+3*VSIZE));
-	vec_t chunk4 = *((vec_t *) (data+4*VSIZE));
-	vec_t chunk5 = *((vec_t *) (data+5*VSIZE));
-	vec_t chunk6 = *((vec_t *) (data+6*VSIZE));
-	vec_t chunk7 = *((vec_t *) (data+7*VSIZE));
-	vec_t chunk8 = *((vec_t *) (data+8*VSIZE));
-	vec_t chunk9 = *((vec_t *) (data+9*VSIZE));
-	vec_t chunk10 = *((vec_t *) (data+10*VSIZE));
-	vec_t chunk11 = *((vec_t *) (data+11*VSIZE));
-	accum0 = accum0 OP chunk0;
-	accum1 = accum1 OP chunk1;
-	accum2 = accum2 OP chunk2;
-	accum3 = accum3 OP chunk3;
-	accum4 = accum4 OP chunk4;
-	accum5 = accum5 OP chunk5;
-	accum6 = accum6 OP chunk6;
-	accum7 = accum7 OP chunk7;
-	accum8 = accum8 OP chunk8;
-	accum9 = accum9 OP chunk9;
-	accum10 = accum10 OP chunk10;
-	accum11 = accum11 OP chunk11;
-	data += 12*VSIZE;
-	cnt -= 12*VSIZE;
+    while (cnt >= 12 * VSIZE)
+    {
+        vec_t chunk0 = *((vec_t *)data);
+        vec_t chunk1 = *((vec_t *)(data + VSIZE));
+        vec_t chunk2 = *((vec_t *)(data + 2 * VSIZE));
+        vec_t chunk3 = *((vec_t *)(data + 3 * VSIZE));
+        vec_t chunk4 = *((vec_t *)(data + 4 * VSIZE));
+        vec_t chunk5 = *((vec_t *)(data + 5 * VSIZE));
+        vec_t chunk6 = *((vec_t *)(data + 6 * VSIZE));
+        vec_t chunk7 = *((vec_t *)(data + 7 * VSIZE));
+        vec_t chunk8 = *((vec_t *)(data + 8 * VSIZE));
+        vec_t chunk9 = *((vec_t *)(data + 9 * VSIZE));
+        vec_t chunk10 = *((vec_t *)(data + 10 * VSIZE));
+        vec_t chunk11 = *((vec_t *)(data + 11 * VSIZE));
+        accum0 = accum0 OP chunk0;
+        accum1 = accum1 OP chunk1;
+        accum2 = accum2 OP chunk2;
+        accum3 = accum3 OP chunk3;
+        accum4 = accum4 OP chunk4;
+        accum5 = accum5 OP chunk5;
+        accum6 = accum6 OP chunk6;
+        accum7 = accum7 OP chunk7;
+        accum8 = accum8 OP chunk8;
+        accum9 = accum9 OP chunk9;
+        accum10 = accum10 OP chunk10;
+        accum11 = accum11 OP chunk11;
+        data += 12 * VSIZE;
+        cnt -= 12 * VSIZE;
     }
-    while (cnt) {
-	result = result OP *data++;
-	cnt--;
+    while (cnt)
+    {
+        result = result OP * data++;
+        cnt--;
     }
-    accum0 = (accum0 OP accum1) OP (accum2 OP accum3);
-    accum0 = accum0 OP (accum4 OP accum5) OP (accum6 OP accum7);
-    accum0 = accum0 OP (accum8 OP accum9) OP (accum10 OP accum11);
+    accum0 = (accum0 OP accum1)OP(accum2 OP accum3);
+    accum0 = accum0 OP(accum4 OP accum5) OP(accum6 OP accum7);
+    accum0 = accum0 OP(accum8 OP accum9) OP(accum10 OP accum11);
     for (i = 0; i < VSIZE; i++)
-	result = result OP accum0[i];
+        result = result OP accum0[i];
     *dest = result;
 }
 
 /* Same idea, but use different associativity to get parallelism */
-char simd_v2a_descr[] = "simd_v2a: SSE code, 2*VSIZE-way parallelism, reassociate";
+char simd_v2a_descr[] =
+    "simd_v2a: SSE code, 2*VSIZE-way parallelism, reassociate";
 void simd_v2a_combine(vec_ptr v, data_t *dest)
 {
     long i;
@@ -1890,32 +2064,36 @@ void simd_v2a_combine(vec_ptr v, data_t *dest)
     vec_t accum;
 
     for (i = 0; i < VSIZE; i++)
-	accum[i] = IDENT;
+        accum[i] = IDENT;
     /* $end simd_ref */
 
     /* Single step until have memory alignment */
-    while ((((size_t) data) % VBYTES) != 0 && cnt) {
-	result = result OP *data++; 
-	cnt--;                              
-    }                              //line:opt:simd:startend
+    while ((((size_t)data) % VBYTES) != 0 && cnt)
+    {
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:startend
 
-    while (cnt >= 2*VSIZE) {
-	vec_t chunk0 = *((vec_t *) data);
-	vec_t chunk1 = *((vec_t *) (data+VSIZE));
-	accum = accum OP (chunk0 OP chunk1);
-	data += 2*VSIZE;
-	cnt -= 2*VSIZE;
+    while (cnt >= 2 * VSIZE)
+    {
+        vec_t chunk0 = *((vec_t *)data);
+        vec_t chunk1 = *((vec_t *)(data + VSIZE));
+        accum = accum OP(chunk0 OP chunk1);
+        data += 2 * VSIZE;
+        cnt -= 2 * VSIZE;
     }
-    while (cnt) {
-	result = result OP *data++;
-	cnt--;
+    while (cnt)
+    {
+        result = result OP * data++;
+        cnt--;
     }
     for (i = 0; i < VSIZE; i++)
-	result = result OP accum[i];
+        result = result OP accum[i];
     *dest = result;
 }
 
-char simd_v4a_descr[] = "simd_v4a: SSE code, 4*VSIZE-way parallelism, reassociate";
+char simd_v4a_descr[] =
+    "simd_v4a: SSE code, 4*VSIZE-way parallelism, reassociate";
 void simd_v4a_combine(vec_ptr v, data_t *dest)
 {
     long i;
@@ -1926,38 +2104,41 @@ void simd_v4a_combine(vec_ptr v, data_t *dest)
 
     /* Initialize accum to IDENT */
     for (i = 0; i < VSIZE; i++)
-	accum[i] = IDENT;
+        accum[i] = IDENT;
 
     /* Single step until have memory alignment */
-    while ((((size_t) data) % VBYTES) != 0 && cnt) {
-	result = result OP *data++; 
-	cnt--;                              
-    }                              //line:opt:simd:startend
+    while ((((size_t)data) % VBYTES) != 0 && cnt)
+    {
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:startend
 
     /* $begin simd_v4a_loop-c */
-    while (cnt >= 4*VSIZE) {
-	vec_t chunk0 = *((vec_t *) data);
-	vec_t chunk1 = *((vec_t *) (data+VSIZE));
-	vec_t chunk2 = *((vec_t *) (data+2*VSIZE));
-	vec_t chunk3 = *((vec_t *) (data+3*VSIZE));
-	accum = accum OP
-	    ((chunk0 OP chunk1) OP (chunk2 OP chunk3));
-	data += 4*VSIZE;
-	cnt -= 4*VSIZE;
+    while (cnt >= 4 * VSIZE)
+    {
+        vec_t chunk0 = *((vec_t *)data);
+        vec_t chunk1 = *((vec_t *)(data + VSIZE));
+        vec_t chunk2 = *((vec_t *)(data + 2 * VSIZE));
+        vec_t chunk3 = *((vec_t *)(data + 3 * VSIZE));
+        accum = accum OP((chunk0 OP chunk1)OP(chunk2 OP chunk3));
+        data += 4 * VSIZE;
+        cnt -= 4 * VSIZE;
     }
     /* $end simd_v4a_loop-c */
 
-    while (cnt) {
-	result = result OP *data++;
-	cnt--;
+    while (cnt)
+    {
+        result = result OP * data++;
+        cnt--;
     }
 
     for (i = 0; i < VSIZE; i++)
-	result = result OP accum[i];
+        result = result OP accum[i];
     *dest = result;
 }
 
-char simd_v8a_descr[] = "simd_v8a: SSE code, 8*VSIZE-way parallelism, reassociate";
+char simd_v8a_descr[] =
+    "simd_v8a: SSE code, 8*VSIZE-way parallelism, reassociate";
 void simd_v8a_combine(vec_ptr v, data_t *dest)
 {
     long i;
@@ -1968,39 +2149,39 @@ void simd_v8a_combine(vec_ptr v, data_t *dest)
 
     /* Initialize accum to IDENT */
     for (i = 0; i < VSIZE; i++)
-	accum[i] = IDENT;
+        accum[i] = IDENT;
 
     /* Single step until have memory alignment */
-    while ((((size_t) data) % VBYTES) != 0 && cnt) {
-	result = result OP *data++; 
-	cnt--;                              
-    }                              //line:opt:simd:startend
+    while ((((size_t)data) % VBYTES) != 0 && cnt)
+    {
+        result = result OP * data++;
+        cnt--;
+    } // line:opt:simd:startend
 
-    while (cnt >= 8*VSIZE) {
-	vec_t chunk0 = *((vec_t *) data);
-	vec_t chunk1 = *((vec_t *) (data+VSIZE));
-	vec_t chunk2 = *((vec_t *) (data+2*VSIZE));
-	vec_t chunk3 = *((vec_t *) (data+3*VSIZE));
-	vec_t chunk4 = *((vec_t *) (data+4*VSIZE));
-	vec_t chunk5 = *((vec_t *) (data+5*VSIZE));
-	vec_t chunk6 = *((vec_t *) (data+6*VSIZE));
-	vec_t chunk7 = *((vec_t *) (data+7*VSIZE));
-	accum = accum OP
-	    (((chunk0 OP chunk1) OP (chunk2 OP chunk3))
-	     OP
-	     ((chunk4 OP chunk5) OP (chunk6 OP chunk7)));
-	data += 8*VSIZE;
-	cnt -= 8*VSIZE;
+    while (cnt >= 8 * VSIZE)
+    {
+        vec_t chunk0 = *((vec_t *)data);
+        vec_t chunk1 = *((vec_t *)(data + VSIZE));
+        vec_t chunk2 = *((vec_t *)(data + 2 * VSIZE));
+        vec_t chunk3 = *((vec_t *)(data + 3 * VSIZE));
+        vec_t chunk4 = *((vec_t *)(data + 4 * VSIZE));
+        vec_t chunk5 = *((vec_t *)(data + 5 * VSIZE));
+        vec_t chunk6 = *((vec_t *)(data + 6 * VSIZE));
+        vec_t chunk7 = *((vec_t *)(data + 7 * VSIZE));
+        accum = accum OP(((chunk0 OP chunk1)OP(chunk2 OP chunk3))OP(
+            (chunk4 OP chunk5)OP(chunk6 OP chunk7)));
+        data += 8 * VSIZE;
+        cnt -= 8 * VSIZE;
     }
-    while (cnt) {
-	result = result OP *data++;
-	cnt--;
+    while (cnt)
+    {
+        result = result OP * data++;
+        cnt--;
     }
     for (i = 0; i < VSIZE; i++)
-	result = result OP accum[i];
+        result = result OP accum[i];
     *dest = result;
 }
-
 
 void register_combiners(void)
 {
@@ -2010,7 +2191,7 @@ void register_combiners(void)
     add_combiner(combine3, combine1, combine3_descr);
     add_combiner(combine3w, combine1, combine3w_descr);
 #endif
-    add_combiner(combine4, combine1,combine4_descr);
+    add_combiner(combine4, combine1, combine4_descr);
 #ifndef UNROLL_ONLY
     add_combiner(combine4b, combine1, combine4b_descr);
     add_combiner(combine4p, combine1, combine4p_descr);
@@ -2078,10 +2259,3 @@ void register_combiners(void)
     log_combiner(simd_v8a_combine, 0.16, 0.24);
 #endif
 }
-
-
-
-
-
-
-

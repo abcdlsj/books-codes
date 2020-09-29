@@ -28,31 +28,31 @@
 /* Adjustments and additions to the signal number constants for
    most Linux systems.  */
 
-#define	SIGSTKFLT	16	/* Stack fault (obsolete).  */
-#define	SIGPWR		30	/* Power failure imminent.  */
+#define SIGSTKFLT 16 /* Stack fault (obsolete).  */
+#define SIGPWR 30    /* Power failure imminent.  */
 
-#undef	SIGBUS
-#define	SIGBUS		 7
-#undef	SIGUSR1
-#define	SIGUSR1		10
-#undef	SIGUSR2
-#define	SIGUSR2		12
-#undef	SIGCHLD
-#define	SIGCHLD		17
-#undef	SIGCONT
-#define	SIGCONT		18
-#undef	SIGSTOP
-#define	SIGSTOP		19
-#undef	SIGTSTP
-#define	SIGTSTP		20
-#undef	SIGURG
-#define	SIGURG		23
-#undef	SIGPOLL
-#define	SIGPOLL		29
-#undef	SIGSYS
-#define SIGSYS		31
+#undef SIGBUS
+#define SIGBUS 7
+#undef SIGUSR1
+#define SIGUSR1 10
+#undef SIGUSR2
+#define SIGUSR2 12
+#undef SIGCHLD
+#define SIGCHLD 17
+#undef SIGCONT
+#define SIGCONT 18
+#undef SIGSTOP
+#define SIGSTOP 19
+#undef SIGTSTP
+#define SIGTSTP 20
+#undef SIGURG
+#define SIGURG 23
+#undef SIGPOLL
+#define SIGPOLL 29
+#undef SIGSYS
+#define SIGSYS 31
 
-#undef	__SIGRTMAX
-#define __SIGRTMAX	64
+#undef __SIGRTMAX
+#define __SIGRTMAX 64
 
-#endif	/* <signal.h> included.  */
+#endif /* <signal.h> included.  */

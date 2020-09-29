@@ -1,11 +1,12 @@
 #include <stdio.h>
 
-void hworld() {
+void hworld()
+{
     printf("Hello, World!\n");
 }
 
-int main() {
+int main()
+{
     hworld();
     return 0;
 }
-

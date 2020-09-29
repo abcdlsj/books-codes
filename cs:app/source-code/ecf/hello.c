@@ -7,4 +7,3 @@ int main()
     _exit(0);
 }
 /* $end hello-c */
-

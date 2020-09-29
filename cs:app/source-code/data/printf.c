@@ -1,12 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* 
+/*
  * NOTE: This code may generate a compiler warning about
  * the large constant 2147483648
-*/
+ */
 
-int main ()
+int main()
 {
     /* $begin printf */
     int x = -1;
